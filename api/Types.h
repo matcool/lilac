@@ -4,6 +4,12 @@
 #include <string>
 #include <vector>
 
+namespace cocos2d {
+    class CCPoint;
+    class CCSize;
+    class CCNode;
+}
+
 namespace lilac {
 
     using l_addr = uintptr_t;
@@ -14,6 +20,17 @@ namespace lilac {
         startup = 0,
         loading_screen = 1,
         main_menu = 2,
+    };
+
+    enum class TargetContainer {
+        MenuLayer_main_menu,
+        MenuLayer_bottom_menu,
+    };
+
+    enum class TargetPosition {
+        start,
+        middle,
+        end,
     };
 
 }

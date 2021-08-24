@@ -46,6 +46,10 @@ namespace lilac {
         friend class Mod;
         friend class Loader;
 
+        Hook() = delete;
+        Hook(Mod* owner, l_addr address);
+        ~Hook() = default;
+
     public:
         /**
         * Get the address being hooked

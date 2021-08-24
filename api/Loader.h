@@ -21,6 +21,14 @@ namespace lilac {
         */
         void enable_mods(ModLoadTime time);
 
+        /**
+         * Add a hook with an owner
+         * This is the function that actually sets
+         * the hook in memory
+        */
+        template<typename Hook_T>
+        bool add_hook(Hook* hook, Hook_T detour);
+
     public:
         /**
         * Get shared Loader instance

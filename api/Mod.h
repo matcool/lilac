@@ -60,6 +60,10 @@ namespace lilac {
 		* Patches owned by this mod
 		*/
 		std::vector<Patch*> m_patches;
+		/**
+		* Containers handled owned by this mod
+		*/
+		std::vector<TargetContainer> m_handlers;
 
 		/**
 		* Private constructors
@@ -72,6 +76,41 @@ namespace lilac {
 		Mod(const Mod&) = delete;
 
 		friend class Loader;
+
+		// PROTECTED MEMBER FUNCS
+		// Only used by internal systems, such as the loader
+
+		/**
+		* Check if this mod wants to handle a certain
+		* target container
+		* @param container The container to handle
+		*/
+		bool will_handle(TargetContainer container);
+		/**
+		* Call the mod's position handler clearer.
+		* @param container The container to clear.
+		*/
+		void handle_clear(TargetContainer container);
+		/**
+		* Call the mod's container getter.
+		* @param container The container to get.
+		* @returns The container.
+		*/
+		cocos2d::CCNode* handle_get(TargetContainer container);
+		/**
+		* Call the mod's free-position-in-container getter.
+		* @param container The target container.
+		* @param position The requested position in the container.
+		* @param size The free space requested. Will be a size of
+		* 0,0 if no space was specified, meaning the mod should
+		* use the default size for that container.
+		* @returns A free position in the container.
+		*/
+		cocos2d::CCPoint handle_pos(
+			TargetContainer container,
+			TargetPosition position,
+			cocos2d::CCSize size
+		);
 	
 	public:
 		/**
