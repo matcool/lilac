@@ -1,0 +1,6 @@
+[submodule "include/core"]
+	path = include/core
+	url = https://github.com/lilac-sdk/core.git
+[submodule "include/meta"]
+	path = include/meta
+	url = https://github.com/lilac-sdk/meta.git
