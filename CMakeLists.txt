@@ -13,6 +13,10 @@ add_subdirectory(submodules/meta)
 add_subdirectory(submodules/src)
 include("submodules/lib/include.cmake")
 
+include_directories(
+  "${CMAKE_SOURCE_DIR}/api/lilac"
+)
+
 add_compile_definitions(_EXPORTING)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
