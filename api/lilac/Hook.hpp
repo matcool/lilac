@@ -7,23 +7,50 @@ namespace lilac {
     using address_t = uintptr_t;
 
     class Mod;
+    class Loader;
 
     class LILAC_DLL Hook {
-        private:
+        protected:
             Mod*  m_owner;
             void* m_address;
             void* m_detour;
             void* m_handle = nullptr;
             bool  m_enabled;
 
-        public:
-            address_t getAddress() const { return m_address; }
-            bool isEnabled() const { return m_enabled; }
-            Mod* getOwner() const { return m_owner; }
+            friend class Mod;
+            friend class Loader;
 
-            Hook(address_t addr) :
-                m_address(reinterpret_cast<void*>(addr)), m_enabled(false) {}
-            Hook(void* addr) :
-                m_address(addr), m_enabled(false) {}
+            // Only allow friend classes to create
+            // hooks. Whatever method created the
+            // hook should take care of populating
+            // m_owner, m_address, m_detour and 
+            // m_handle.
+            Hook() : m_enabled(false) {}
+
+            // no copying
+            Hook(Hook const&) = delete;
+            Hook operator=(Hook const&) = delete;
+
+        public:
+            /**
+             * Get the address of the function hooked.
+             * @returns Address
+             * @author HJfod
+             */
+            address_t getAddress() const { return reinterpret_cast<address_t>(m_address); }
+
+            /**
+             * Get whether the hook is enabled or not.
+             * @returns True if enabled, false if not.
+             * @author HJfod
+             */
+            bool isEnabled() const { return m_enabled; }
+
+            /**
+             * Get the owner of this hook.
+             * @returns Pointer to the owner's Mod handle.
+             * @author HJfod
+             */
+            Mod* getOwner() const { return m_owner; }
     };
 }

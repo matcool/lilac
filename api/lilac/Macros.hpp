@@ -40,3 +40,16 @@
 #ifndef LILAC_PLATFORM_NAME
 #error "Unsupported platform!"
 #endif
+
+#define USE_LILAC_NAMESPACE()           \
+    using namespace lilac;              \
+    using namespace lilac::cast;        \
+    using namespace lilac::cocos;       \
+    using namespace lilac::utils;       \
+    using namespace lilac::node;        \
+    using namespace lilac::op;          \
+    using namespace lilac::stream;      \
+    using namespace cocos2d;            \
+    using namespace cocos2d::extension; \
+
+

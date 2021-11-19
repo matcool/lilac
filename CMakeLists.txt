@@ -7,13 +7,14 @@ file(GLOB_RECURSE SOURCES
   src/*.cpp
 )
 
-add_library(lilac_loader SHARED ${SOURCES} ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+add_library(lilac_loader SHARED ${SOURCES})
 
 add_subdirectory(submodules/meta)
-add_subdirectory(submodules/src)
+add_subdirectory(submodules/core)
 include("submodules/lib/include.cmake")
 
 include_directories(
+  "${CMAKE_SOURCE_DIR}/api"
   "${CMAKE_SOURCE_DIR}/api/lilac"
 )
 
