@@ -1,11 +1,11 @@
 #pragma once
 
-#include <BGDMacros.hpp>
+#include "../../lilac/Macros.hpp"
 #include <string>
 #include <vector>
 #include <functional>
 
-namespace bgd {
+namespace lilac {
     /**
      * Convert std::wstring to std::string (UTF-8)
      * @param str String to convert

@@ -1,18 +1,18 @@
 #pragma once
 
-#include <BGDMacros.hpp>
+#include "../../lilac/Macros.hpp"
 
-#ifdef BGD_IS_WIN32
+#ifdef LILAC_IS_WIN32
 
 #include <Windows.h>
 
 struct GLFWwindow;
 
-namespace bgd {
+namespace lilac {
     HWND glfwGetWin32Window(GLFWwindow* window);
     HWND getGDHWND();
 
-    struct BGDPlatformInfo {
+    struct PlatformInfo {
         HMODULE hmod;
     };
 }

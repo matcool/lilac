@@ -4,7 +4,6 @@
 #include "../../lilac/Result.hpp"
 #include <string>
 #include "types.hpp"
-#include "result.hpp"
 #include <filesystem>
 
 namespace lilac::utils {

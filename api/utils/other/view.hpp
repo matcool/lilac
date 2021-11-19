@@ -2,7 +2,7 @@
 
 #include "vector.hpp"
 
-namespace bgd {
+namespace lilac {
     template<typename T>
     struct vector_combine {
         std::vector<T> m_vec;

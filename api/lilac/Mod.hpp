@@ -13,6 +13,7 @@ namespace lilac {
     struct PlatformInfo;
 
     class Hook;
+    class Loader;
 
     /**
      * @class ModBase
@@ -55,6 +56,10 @@ namespace lilac {
      * @abstract
      */
     class LILAC_DLL Mod : ModBase {
+        private:
+            void disableBase();
+            void enableBase();
+
         protected:
             /**
              * Human-readable ID of the Mod.
@@ -148,6 +153,8 @@ namespace lilac {
             
             Mod();
             virtual ~Mod();
+
+            friend class Loader;
 
         public:
             /* @region getters */

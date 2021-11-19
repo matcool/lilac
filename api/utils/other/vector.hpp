@@ -1,12 +1,12 @@
 #pragma once
 
-#include <BGDMacros.hpp>
+#include "../../lilac/Macros.hpp"
 #include <string>
 #include <vector>
 #include <functional>
 #include <algorithm>
 
-namespace bgd {
+namespace lilac {
     /**
      * Check if a vector contains an element by value.
      * @param vec The vector to check.
@@ -159,21 +159,51 @@ namespace bgd {
         return vector_filter<T>(vec, selectFunc);
     }
 
+    /** 
+     * Remove elements from a vector by value.
+     * @param vec The vector to remove from.
+     * @param element Elements to remove.
+     * @returns Reference to vector.
+     */
     template<class T>
     std::vector<T> & vector_erase(std::vector<T> & vec, T element) {
         vec.erase(std::remove(vec.begin(), vec.end(), element), vec.end());
         return vec;
     }
 
+    /** 
+     * Remove elements from a vector via a function.
+     * @param vec The vector to remove from.
+     * @param eraseFunc Predicate function to decide whether
+     * to remove an element or not.
+     * @returns Reference to vector.
+     */
     template<class T>
     std::vector<T> & vector_erase(std::vector<T> & vec, std::function<bool(T)> eraseFunc) {
         vec.erase(std::remove_if(vec.begin(), vec.end(), eraseFunc), vec.end());
         return vec;
     }
 
+    /** 
+     * Reduce vector of elements to single value.
+     * @param vec The vector to reduce.
+     * @param reduceFunc Function to handle the
+     * creation of the reduced value. First parameter
+     * is a reference to the accumulator and second
+     * is the current item. Modify the value in the
+     * accumulator, for example with R += T, to
+     * compute the reduced value.
+     * @example ```cpp
+     * std::vector<int> numbers = { 1, 3, 7, 8, };
+     * int total = vector_reduce<int, int>(numbers, [](int& acc, int val) -> void {
+     *      acc += val;
+     * }); // 19
+     * ```
+     * @returns Reduced value.
+     */
     template<class R, class T>
     R vector_reduce(std::vector<T> const& vec, std::function<void(R&, T)> reduceFunc) {
-        R res;
+        R res = R();
         for (auto const& item : vec) {
             reduceFunc(res, item);
         }

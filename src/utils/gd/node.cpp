@@ -1,8 +1,34 @@
 #include <utils/gd/node.hpp>
 
-USE_BGD_NAMESPACE();
+USE_LILAC_NAMESPACE();
 
-bool bgd::nodeIsVisible(CCNode* t) {
+void lilac::node::limitNodeSize(
+    cocos2d::CCNode* spr,
+    cocos2d::CCSize const& size,
+    float def,
+    float min
+) {
+    spr->setScale(1.f);
+    auto [cwidth, cheight] = spr->getContentSize();
+
+    float scale = def;
+    if (size.height && size.height < cheight) {
+        scale = size.height / cheight;
+    }
+    if (size.width && size.width < cwidth) {
+        if (size.width / cwidth < scale)
+            scale = size.width / cwidth;
+    }
+    if (def && def < scale) {
+        scale = def;
+    }
+    if (min && scale < min) {
+        scale = min;
+    }
+    spr->setScale(scale);
+}
+
+bool lilac::node::nodeIsVisible(CCNode* t) {
     if (!t->isVisible())
         return false;
 
@@ -12,7 +38,7 @@ bool bgd::nodeIsVisible(CCNode* t) {
     return true;
 }
 
-bool bgd::nodeIsHovered(CCNode* node, CCPoint const& gpos) {
+bool lilac::node::nodeIsHovered(CCNode* node, CCPoint const& gpos) {
     auto pos = node->getParent()->convertToWorldSpace(node->getPosition());
     auto size = node->getScaledContentSize();
 
@@ -26,7 +52,7 @@ bool bgd::nodeIsHovered(CCNode* node, CCPoint const& gpos) {
     return rect.containsPoint(gpos);
 }
 
-CCPoint bgd::getMousePos() {
+CCPoint lilac::node::getMousePos() {
     auto winSize = CCDirector::sharedDirector()->getWinSize();
     auto winSizePx = CCDirector::sharedDirector()->getOpenGLView()->getViewPortRect();
     auto ratio_w = winSize.width / winSizePx.size.width;

@@ -16,10 +16,10 @@ namespace lilac {
 
     class LILAC_DLL Loader {
         protected:
-            std::vector<Mod*> m_vLoadedMods;
+            std::vector<Mod*> m_loadedMods;
             // std::vector<LogMessage*> m_vLogs;
             // BGDLogStream* m_pLogStream;
-            bool m_bIsSetup = false;
+            bool m_isSetup = false;
 
             Loader();
             virtual ~Loader();

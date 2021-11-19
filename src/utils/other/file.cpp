@@ -2,7 +2,9 @@
 #include <fstream>
 #include <filesystem>
 
-bgd::Result<std::string> bgd::file_read_string(std::string const& path) {
+USE_LILAC_NAMESPACE();
+
+Result<std::string> utils::file_read_string(std::string const& path) {
     std::ifstream in(path, std::ios::in | std::ios::binary);
     if (in) {
         std::string contents;
@@ -16,7 +18,7 @@ bgd::Result<std::string> bgd::file_read_string(std::string const& path) {
     return Err("Unable to open file");
 }
 
-bgd::Result<std::string> bgd::file_read_string(std::wstring const& path) {
+Result<std::string> utils::file_read_string(std::wstring const& path) {
     std::ifstream in(path, std::ios::in | std::ios::binary);
     if (in) {
         std::string contents;
@@ -30,7 +32,7 @@ bgd::Result<std::string> bgd::file_read_string(std::wstring const& path) {
     return Err("Unable to open file");
 }
 
-bgd::Result<std::string> bgd::file_read_string(std::filesystem::path const& path) {
+Result<std::string> utils::file_read_string(std::filesystem::path const& path) {
     std::ifstream in(path.string(), std::ios::in | std::ios::binary);
     if (in) {
         std::string contents;
@@ -44,31 +46,31 @@ bgd::Result<std::string> bgd::file_read_string(std::filesystem::path const& path
     return Err("Unable to open file");
 }
 
-bgd::Result<bgd::byte_array> bgd::file_read_binary(std::string const& path) {
+Result<byte_array> utils::file_read_binary(std::string const& path) {
     std::ifstream in(path, std::ios::in | std::ios::binary);
     if (in) {
-        return Ok(bgd::byte_array (std::istreambuf_iterator<char>(in), {}));
+        return Ok(byte_array (std::istreambuf_iterator<char>(in), {}));
     }
     return Err("Unable to open file");
 }
 
-bgd::Result<bgd::byte_array> bgd::file_read_binary(std::wstring const& path) {
+Result<byte_array> utils::file_read_binary(std::wstring const& path) {
     std::ifstream in(path, std::ios::in | std::ios::binary);
     if (in) {
-        return Ok(bgd::byte_array (std::istreambuf_iterator<char>(in), {}));
+        return Ok(byte_array (std::istreambuf_iterator<char>(in), {}));
     }
     return Err("Unable to open file");
 }
 
-bgd::Result<bgd::byte_array> bgd::file_read_binary(std::filesystem::path const& path) {
+Result<byte_array> utils::file_read_binary(std::filesystem::path const& path) {
     std::ifstream in(path.string(), std::ios::in | std::ios::binary);
     if (in) {
-        return Ok(bgd::byte_array (std::istreambuf_iterator<char>(in), {}));
+        return Ok(byte_array (std::istreambuf_iterator<char>(in), {}));
     }
     return Err("Unable to open file");
 }
 
-bgd::Result<> bgd::file_write_string(std::string const& path, std::string const& data) {
+Result<> utils::file_write_string(std::string const& path, std::string const& data) {
     std::ofstream file;
     file.open(path);
     if (file.is_open()) {
@@ -81,7 +83,7 @@ bgd::Result<> bgd::file_write_string(std::string const& path, std::string const&
     return Err<>("Unable to open file");
 }
 
-bgd::Result<> bgd::file_write_string(std::wstring const& path, std::string const& data) {
+Result<> utils::file_write_string(std::wstring const& path, std::string const& data) {
     std::ofstream file;
     file.open(path);
     if (file.is_open()) {
@@ -94,7 +96,7 @@ bgd::Result<> bgd::file_write_string(std::wstring const& path, std::string const
     return Err<>("Unable to open file");
 }
 
-bgd::Result<> bgd::file_write_string(std::filesystem::path const& path, std::string const& data) {
+Result<> utils::file_write_string(std::filesystem::path const& path, std::string const& data) {
     std::ofstream file;
     file.open(path.string());
     if (file.is_open()) {
@@ -107,7 +109,7 @@ bgd::Result<> bgd::file_write_string(std::filesystem::path const& path, std::str
     return Err<>("Unable to open file");
 }
 
-bgd::Result<> bgd::file_write_binary(std::string const& path, byte_array const& data) {
+Result<> utils::file_write_binary(std::string const& path, byte_array const& data) {
     std::ofstream file;
     file.open(path, std::ios::out | std::ios::binary);
     if (file.is_open()) {
@@ -120,7 +122,7 @@ bgd::Result<> bgd::file_write_binary(std::string const& path, byte_array const& 
     return Err<>("Unable to open file");
 }
 
-bgd::Result<> bgd::file_write_binary(std::wstring const& path, byte_array const& data) {
+Result<> utils::file_write_binary(std::wstring const& path, byte_array const& data) {
     std::ofstream file;
     file.open(path, std::ios::out | std::ios::binary);
     if (file.is_open()) {
@@ -133,7 +135,7 @@ bgd::Result<> bgd::file_write_binary(std::wstring const& path, byte_array const&
     return Err<>("Unable to open file");
 }
 
-bgd::Result<> bgd::file_write_binary(std::filesystem::path const& path, byte_array const& data) {
+Result<> utils::file_write_binary(std::filesystem::path const& path, byte_array const& data) {
     std::ofstream file;
     file.open(path.string(), std::ios::out | std::ios::binary);
     if (file.is_open()) {
@@ -146,13 +148,13 @@ bgd::Result<> bgd::file_write_binary(std::filesystem::path const& path, byte_arr
     return Err<>("Unable to open file");
 }
 
-bgd::Result<> bgd::directory_create(std::string const& path) {
+Result<> utils::directory_create(std::string const& path) {
     if (std::filesystem::create_directory(path))
         return Ok<>();
     return Err<>("Unable to create directory");
 }
 
-bgd::Result<> bgd::directory_create_all(std::string const& path) {
+Result<> utils::directory_create_all(std::string const& path) {
     if (std::filesystem::create_directories(path))
         return Ok<>();
     return Err<>("Unable to create directories");

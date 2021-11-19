@@ -6,6 +6,12 @@ namespace lilac::node {
     LILAC_DLL bool nodeIsVisible(cocos2d::CCNode* node);
     LILAC_DLL bool nodeIsHovered(cocos2d::CCNode* node, cocos2d::CCPoint const& gpos);
     LILAC_DLL cocos2d::CCPoint getMousePos();
+    LILAC_DLL void limitNodeSize(
+        cocos2d::CCNode* node,
+        cocos2d::CCSize const& size,
+        float def,
+        float min
+    );
 
     template<typename T>
     static T getChild(cocos2d::CCNode* x, int i) {
