@@ -18,6 +18,7 @@ namespace lilac {
         protected:
             std::vector<Mod*> m_loadedMods;
             std::vector<SharedMod*> m_sharedMods;
+            std::vector<std::string> m_searchPaths;
             // std::vector<LogMessage*> m_vLogs;
             // BGDLogStream* m_pLogStream;
             bool m_isSetup = false;
@@ -27,6 +28,8 @@ namespace lilac {
 
             void createDirectories();
             bool loadModFromFile(std::string const& file);
+
+            friend class SharedMod;
             
         public:
             static Loader* get();

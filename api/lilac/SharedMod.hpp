@@ -28,6 +28,9 @@ namespace lilac {
      */
     class LILAC_DLL SharedMod : public Mod {
         protected:
+            /**
+             * 
+             */
             std::string_view m_customExtension = "";
 
             /**
