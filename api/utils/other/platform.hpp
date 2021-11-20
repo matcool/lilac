@@ -10,8 +10,4 @@
 namespace lilac::utils {
     LILAC_DLL bool copyToClipboard(std::string const& data);
     LILAC_DLL std::string readClipboard();
-
-    LILAC_DLL bool loadConsole();
-    LILAC_DLL bool unloadConsole();
-    LILAC_DLL void bufferConsoleInput();
 }

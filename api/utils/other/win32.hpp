@@ -8,13 +8,9 @@
 
 struct GLFWwindow;
 
-namespace lilac {
+namespace lilac::utils {
     HWND glfwGetWin32Window(GLFWwindow* window);
     HWND getGDHWND();
-
-    struct PlatformInfo {
-        HMODULE hmod;
-    };
 }
 
 #endif

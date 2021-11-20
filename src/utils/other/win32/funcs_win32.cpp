@@ -1,11 +1,11 @@
 #include <utils/gd/include_gd.hpp>
 #include <utils/other/platform.hpp>
 
-#ifdef BGD_IS_WIN32
+#ifdef LILAC_IS_WIN32
 
-USE_BGD_NAMESPACE();
+USE_LILAC_NAMESPACE();
 
-HWND bgd::glfwGetWin32Window(GLFWwindow* window) {
+HWND lilac::utils::glfwGetWin32Window(GLFWwindow* window) {
     static auto cocosBase = GetModuleHandleA("libcocos2d.dll");
 
     auto pRet = reinterpret_cast<HWND(__cdecl*)(GLFWwindow*)>(
@@ -15,7 +15,7 @@ HWND bgd::glfwGetWin32Window(GLFWwindow* window) {
     return pRet;
 }
 
-HWND bgd::getGDHWND() {
+HWND lilac::utils::getGDHWND() {
     static HWND g_hwnd = nullptr;
 
     if (!g_hwnd) {

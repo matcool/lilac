@@ -2,7 +2,6 @@
 
 #include "Macros.hpp"
 
-
 namespace lilac {
     static constexpr const std::string_view lilac_directory          = "lilac";
     static constexpr const std::string_view lilac_mod_directory      = "mods";
@@ -12,11 +11,13 @@ namespace lilac {
                                                                        LILAC_ANDROID(".so");
 
     class Mod;
+    class SharedMod;
     class Hook;
 
     class LILAC_DLL Loader {
         protected:
             std::vector<Mod*> m_loadedMods;
+            std::vector<SharedMod*> m_sharedMods;
             // std::vector<LogMessage*> m_vLogs;
             // BGDLogStream* m_pLogStream;
             bool m_isSetup = false;
@@ -50,5 +51,6 @@ namespace lilac {
             bool isModLoaded(std::string_view const& id);
             Mod* getLoadedMod(std::string_view const& id);
             std::vector<Mod*> getLoadedMods();
+            bool isSharedModLoaded(std::string_view const& id);
     };
 }

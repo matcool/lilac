@@ -19,3 +19,4 @@ ${workspaceFolder}/submodules/lib/include/cocos2dx/platform/third_party/win32/ic
 ${workspaceFolder}/submodules/lib/include/cocos2dx/platform/win32
 ${workspaceFolder}/submodules/lib/include/fmod/inc
 ${workspaceFolder}/submodules/lib/include/extensions
+${workspaceFolder}/src/lilac

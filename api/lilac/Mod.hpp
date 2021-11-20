@@ -4,6 +4,7 @@
 #include "Result.hpp"
 #include <string_view>
 #include <vector>
+#include <unordered_map>
 
 namespace lilac {
     #pragma warning(disable: 4251) // I will use unordered_map and
@@ -14,6 +15,12 @@ namespace lilac {
 
     class Hook;
     class Loader;
+
+    enum class DependencyType {
+        Optional,
+        Required,
+        Expansion,
+    };
 
     /**
      * @class ModBase
@@ -27,15 +34,38 @@ namespace lilac {
      */
     class LILAC_DLL ModBase {
         protected:
-            std::string_view    m_path;         // Path of the loaded file on a given platform
-            PlatformInfo*       m_platformInfo; // Platform-specific info
-            std::vector<Hook*>  m_hooks;        // Hooks owned by this mod
-            bool                m_enabled;      // Whether the mod is enabled or not
+            /**
+             * Path of the loaded file on a
+             * given platform
+             */
+            std::string_view m_path;
+            /**
+             * Platform-specific info
+             */
+            PlatformInfo* m_platformInfo;
+            /**
+             * Hooks owned by this mod
+             */
+            std::vector<Hook*> m_hooks;
+            /**
+             * Whether the mod is enabled or not
+             */
+            bool m_enabled;
+            /**
+             * Dependencies
+             */
+            std::unordered_map<std::string, DependencyType> m_dependencies;
 
             /**
              * Cleanup platform-related info
              */
             void platformCleanup();
+
+            /**
+             * Check whether or not this Mod
+             * depends on another mod
+             */
+            bool depends(std::string_view const& id) const;
             
             /**
              * Low-level add hook
@@ -94,17 +124,27 @@ namespace lilac {
              * Short description between 1 and
              * 60 characters.
              */
-            std::string_view m_description  = "";
+            std::string_view m_description = "";
             /**
              * Free-form detailed description
              * of the mod. Do not write credits
              * here; use `m_credits` instead.
              */
-            std::string_view m_details      = "";
+            std::string_view m_details = "";
             /**
              * Free-form list of credits.
              */
-            std::string_view m_credits      = "";
+            std::string_view m_credits = "";
+
+            /**
+             * Set the dependencies for this mod.
+             * The value is a map of keys containing
+             * the ID of the mod and values of
+             * type `DependencyType` specifying
+             * whether the dependency is required,
+             * an Expnasion or optional.
+             */
+            void setDependencies(std::unordered_map<std::string, DependencyType> const& dependencies);
 
             /**
              * Mod-specific setup function.
@@ -161,9 +201,10 @@ namespace lilac {
             std::string_view getID()         const;
             std::string_view getName()       const;
             std::string_view getDeveloper()  const;
+            std::string_view getDescription()const;
+            std::string_view getDetails()    const;
             std::string_view getCredits()    const;
             std::string_view getPath()       const;
-            std::string_view getDescription()const;
             bool             isEnabled()     const;
 
             /**
@@ -190,6 +231,8 @@ namespace lilac {
              */
             Result<> removeHook(Hook* hook);
     };
+
+    typedef Mod* (__stdcall* lilac_load_type)();
 
     #pragma warning(restore: 4251)
 }
