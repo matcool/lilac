@@ -1,10 +1,13 @@
 #pragma once
 
 #include "Macros.hpp"
+#include "Types.hpp"
 #include "Result.hpp"
 #include <string_view>
 #include <vector>
 #include <unordered_map>
+
+class Lilac;
 
 namespace lilac {
     #pragma warning(disable: 4251) // I will use unordered_map and
@@ -15,11 +18,12 @@ namespace lilac {
 
     class Hook;
     class Loader;
+    class LogStream;
 
     enum class DependencyType {
         Optional,
         Required,
-        Expansion,
+        SharedMod,
     };
 
     /**
@@ -34,6 +38,8 @@ namespace lilac {
      */
     class LILAC_DLL ModBase {
         protected:
+            using Dependency = std::tuple<DependencyType, bool>;
+
             /**
              * Path of the loaded file on a
              * given platform
@@ -54,7 +60,7 @@ namespace lilac {
             /**
              * Dependencies
              */
-            std::unordered_map<std::string, DependencyType> m_dependencies;
+            std::unordered_map<std::string, Dependency> m_dependencies;
 
             /**
              * Cleanup platform-related info
@@ -178,14 +184,6 @@ namespace lilac {
              * lilac will call it for you.
              */
             virtual void disable();
-            virtual void saveData();
-            virtual void loadData();
-
-            Result<Hook*> addHookInternal(
-                void* addr,
-                void* detour,
-                void** trampoline
-            );
 
             // no copying
             Mod(Mod const&)           = delete;
@@ -195,6 +193,7 @@ namespace lilac {
             virtual ~Mod();
 
             friend class Loader;
+            friend class Lilac;
 
         public:
             /* @region getters */
@@ -208,31 +207,64 @@ namespace lilac {
             bool             isEnabled()     const;
 
             /**
+             * Log to lilac's integrated console / 
+             * the platform debug console.
+             * @returns Reference to log stream. Make sure 
+             * to end your logging with lilac::endl.
+             */
+            LogStream& log();
+
+            /**
+             * Throw an error. Equivalent to 
+             * ```
+             * Mod::log() << Severity::severity << info << lilac::endl.
+             * ```
+             * @param info Error infomration
+             * @param severity Error severity
+             */
+            void throwError(
+                std::string_view const& info,
+                Severity severity
+            );
+
+            /**
              * Get all hooks owned by this Mod
              * @returns Vector of hooks
              */
             std::vector<Hook*> getHooks() const;
 
             /**
+             * Create a hook at an address with a detour
+             * and trampoline
+             * @returns Successful result containing the 
+             * Hook handle, errorful result with info on 
+             * error
+             */
+            Result<Hook*> addHook(void* address, void* detour, void** trampoline);
+
+            /**
              * Enable a hook owned by this Mod
-             * @returns Successful result on success, errorful result with info on error
+             * @returns Successful result on success, 
+             * errorful result with info on error
              */
             Result<> enableHook(Hook* hook);
 
             /**
              * Disable a hook owned by this Mod
-             * @returns Successful result on success, errorful result with info on error
+             * @returns Successful result on success, 
+             * errorful result with info on error
              */
             Result<> disableHook(Hook* hook);
 
             /**
              * Remove a hook owned by this Mod
-             * @returns Successful result on success, errorful result with info on error
+             * @returns Successful result on success, 
+             * errorful result with info on error
              */
             Result<> removeHook(Hook* hook);
     };
 
     typedef Mod* (__stdcall* lilac_load_type)();
 
-    #pragma warning(restore: 4251)
+    #pragma warning(default: 4251)
 }

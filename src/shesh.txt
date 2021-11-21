@@ -1,7 +1,10 @@
 ${workspaceFolder}
+${workspaceFolder}/src
+${workspaceFolder}/src/lilac
 ${workspaceFolder}/api
 ${workspaceFolder}/api/lilac
 ${workspaceFolder}/api/utils
+${workspaceFolder}/submodules/core/include
 ${workspaceFolder}/submodules/lib/include/gd
 ${workspaceFolder}/submodules/lib/include/gd/include
 ${workspaceFolder}/submodules/lib/include/cocos2dx
@@ -19,4 +22,3 @@ ${workspaceFolder}/submodules/lib/include/cocos2dx/platform/third_party/win32/ic
 ${workspaceFolder}/submodules/lib/include/cocos2dx/platform/win32
 ${workspaceFolder}/submodules/lib/include/fmod/inc
 ${workspaceFolder}/submodules/lib/include/extensions
-${workspaceFolder}/src/lilac

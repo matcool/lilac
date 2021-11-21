@@ -2,6 +2,7 @@
 #include <Mod.hpp>
 #include <Log.hpp>
 #include <Loader.hpp>
+#include <SharedMod.hpp>
 #include <utils/utils.hpp>
 
 USE_LILAC_NAMESPACE();
@@ -15,20 +16,20 @@ Mod::~Mod() {
     }
 }
 
-// BGDLogStream& Mod::log() {
-//     return BGDLoader::get()->logStream() << this;
-// }
-
 void Mod::setup() {}
 void Mod::enable() {}
 void Mod::disable() {}
-void Mod::saveData() {
-    auto path = "BetterGD/plugins/"_s;
-    path += this->m_name;
+
+void Mod::disableBase() {
+    this->m_enabled = false;
+    Loader::get()->handleSharedModDependencies(this, &SharedMod::disableMod);
+    this->disable();
 }
-void Mod::loadData() {
-    auto path = "BetterGD/plugins/"_s;
-    path += this->m_name;
+
+void Mod::enableBase() {
+    this->m_enabled = true;
+    Loader::get()->handleSharedModDependencies(this, &SharedMod::enableMod);
+    this->enable();
 }
 
 decltype(Mod::m_id) Mod::getID() const {
@@ -67,18 +68,26 @@ std::vector<Hook*> Mod::getHooks() const {
     return this->m_hooks;
 }
 
-void Mod::setDependencies(std::unordered_map<std::string, bool> const& dependencies) {
-    this->m_dependencies = dependencies;
+void Mod::setDependencies(std::unordered_map<std::string, DependencyType> const& dependencies) {
+    this->m_dependencies = map_remap<
+        std::string, DependencyType,
+        std::string, Dependency
+    >(dependencies, [](std::tuple<std::string, DependencyType> val) -> std::tuple<std::string, Dependency> {
+        return { std::get<0>(val), { std::get<1>(val), false } };
+    });
 }
 
-// void Mod::throwError(
-//     std::string_view const& info,
-//     BGDSeverity severity
-// ) {
-//     BGDLoader::get()->log(new BGDLogMessage(
-//         std::string(info),
-//         severity,
-//         kBGDLogTypeError,
-//         this
-//     ));
-// }
+LogStream& Mod::log() {
+    return Loader::get()->logStream() << this;
+}
+
+void Mod::throwError(
+    std::string_view const& info,
+    Severity severity
+) {
+    Loader::get()->log(new LogMessage(
+        std::string(info),
+        severity,
+        this
+    ));
+}

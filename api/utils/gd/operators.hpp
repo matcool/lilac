@@ -2,8 +2,6 @@
 
 #include "include_gd.hpp"
 
-// todo: define all of these ._.
-
 namespace lilac::op {
     static cocos2d::CCPoint operator*=(cocos2d::CCPoint & pos,  float mul) {
         pos.x *= mul;

@@ -3,6 +3,9 @@
 #include "Mod.hpp"
 
 namespace lilac {
+    class Mod;
+    class Loader;
+
     /**
      * An SharedMod is a special type of Mod 
      * that is meant to provide shared utilities 
@@ -34,6 +37,13 @@ namespace lilac {
             std::string_view m_customExtension = "";
 
             /**
+             * Add a mod search path to the Loader, 
+             * relative to the Lilac directory.
+             * @param path Path to add
+             */
+            void addSearchPath(std::string const& path);
+
+            /**
              * Called when a new mod that lists
              * this SharedMod as a dependency
              * is loaded.
@@ -42,7 +52,7 @@ namespace lilac {
              * and an errorful result with error information
              * explaining why the mod was rejected
              */
-            virtual Result<> loadMod(Mod* mod)      = 0;
+            virtual Result<> loadMod(Mod* mod)  = 0;
             /**
              * Called when a mod that lists
              * this SharedMod as a dependency
@@ -64,5 +74,8 @@ namespace lilac {
              * @param mod The mod's handle
              */
             virtual void unloadMod(Mod* mod)    = 0;
+    
+            friend class Mod;
+            friend class Loader;
     };
 }

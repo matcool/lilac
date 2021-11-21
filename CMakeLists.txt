@@ -13,12 +13,22 @@ add_subdirectory(submodules/meta)
 add_subdirectory(submodules/core)
 include("submodules/lib/include.cmake")
 
+target_link_libraries(
+  lilac_loader
+  lilac_hook
+	"${CMAKE_SOURCE_DIR}/submodules/lib/include/cocos2dx/libcocos2d.lib"
+	"${CMAKE_SOURCE_DIR}/submodules/lib/include/extensions/libExtensions.lib"
+	"${CMAKE_SOURCE_DIR}/submodules/lib/include/fmod/lib/fmod_vc.lib"
+	# "${CMAKE_SOURCE_DIR}/submodules/lib/include/gd/libgd.lib"
+)
+
 include_directories(
   "${CMAKE_SOURCE_DIR}/api"
   "${CMAKE_SOURCE_DIR}/api/lilac"
   "${CMAKE_SOURCE_DIR}/api/utils"
   "${CMAKE_SOURCE_DIR}/src"
   "${CMAKE_SOURCE_DIR}/src/lilac"
+  "${CMAKE_SOURCE_DIR}/submodules/core/include"
 )
 
 add_compile_definitions(_EXPORTING)

@@ -7,6 +7,7 @@ namespace lilac {
     using address_t = uintptr_t;
 
     class Mod;
+    class ModBase;
     class Loader;
 
     class LILAC_DLL Hook {
@@ -30,6 +31,9 @@ namespace lilac {
             // no copying
             Hook(Hook const&) = delete;
             Hook operator=(Hook const&) = delete;
+
+            friend class Mod;
+            friend class ModBase;
 
         public:
             /**

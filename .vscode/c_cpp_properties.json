@@ -9,6 +9,7 @@
                 "${workspaceFolder}/api",
                 "${workspaceFolder}/api/lilac",
                 "${workspaceFolder}/api/utils",
+                "${workspaceFolder}/submodules/core/include",
                 "${workspaceFolder}/submodules/lib/include/gd",
                 "${workspaceFolder}/submodules/lib/include/gd/include",
                 "${workspaceFolder}/submodules/lib/include/cocos2dx",

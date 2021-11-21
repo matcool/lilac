@@ -11,6 +11,10 @@ class Lilac {
     public:
         static Lilac* get();
 
+        bool setup();
+
+        bool loadHooks();
+
         void setupPlatformConsole();
         void awaitPlatformConsole();
         void closePlatformConsole();

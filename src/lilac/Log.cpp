@@ -1,1 +1,208 @@
+#include <utils/gd/include_gd.hpp>
 #include <Log.hpp>
+#include <Mod.hpp>
+#include <Loader.hpp>
+#include <utils/other/general.hpp>
+#include <utils/gd/stream.hpp>
+
+USE_LILAC_NAMESPACE();
+
+Mod* LogMod::getMod() const { return m_mod; }
+
+cocos2d::CCObject* LogCCObject::getObject() const { return m_obj; }
+
+log_clock::time_point LogMessage::getTime() const {
+    return m_time;
+}
+
+std::string LogMessage::getTimeString() const {
+    return timePointAsString(m_time);
+}
+
+Mod* LogMessage::getSender() const {
+    return m_sender;
+}
+
+Severity LogMessage::getSeverity() const {
+    return m_severity;
+}
+
+std::vector<Log*> const& LogMessage::getData() const {
+    return m_data;
+}
+
+void LogMessage::add(Log* msg) {
+    this->m_data.push_back(msg);
+}
+
+Log::~Log() {}
+
+LogCCObject::LogCCObject(cocos2d::CCObject* obj) : m_obj(obj) {
+    obj->retain();
+}
+
+LogCCObject::~LogCCObject() {
+    if (this->m_obj) {
+        this->m_obj->release();
+    }
+}
+
+LogMessage::~LogMessage() {
+    for (auto const& log : this->m_data) {
+        delete log;
+    }
+}
+
+std::string LogString::toString() const {
+    return this->m_string;
+}
+
+std::string LogMod::toString() const {
+    return "[ " + std::string(this->m_mod->getName()) + " ]";
+}
+
+std::string LogCCObject::toString() const {
+    return "{ " + std::string(typeid(*this->m_obj).name() + 6) + " }";
+}
+
+std::string LogMessage::toString(bool logTime) const {
+    std::stringstream res;
+
+    if (this->m_sender) {
+        res << this->m_sender->getName();
+    }
+    if (logTime) {
+        res << " at " << timePointAsString(this->m_time);
+    }
+    res << ":";
+    for (auto const& log : this->m_data) {
+        res << " " << log->toString();
+    }
+
+    return res.str();
+}
+
+void LogStream::init() {
+    if (!this->m_log) {
+        this->m_log = new LogMessage;
+    }
+}
+
+void LogStream::save() {
+    if (this->m_log && this->m_stream.str().size()) {
+        this->m_log->add(new LogString(this->m_stream.str()));
+        this->m_stream.str(std::string());
+    }
+}
+
+void LogStream::finish() {
+    this->init();
+    this->save();
+
+    Loader::get()->log(this->m_log);
+
+    #ifdef LILAC_PLATFORM_CONSOLE
+    std::cout << this->m_log->toString(true) << "\n";
+    #endif
+
+    // Loader manages this memory now
+    this->m_log = nullptr;
+    this->m_stream.str(std::string());
+}
+
+LogStream& LogStream::operator<<(::Mod* Mod) {
+    this->save();
+    if (!this->m_log) {
+        this->m_log = new LogMessage(Mod);
+    } else if (!this->m_log->m_sender) {
+        this->m_log->m_sender = Mod;
+    } else {
+        this->m_log->add(new LogMod(Mod));
+    }
+    return *this;
+}
+
+LogStream& LogStream::operator<<(cocos2d::CCObject* obj) {
+    this->save();
+    this->init();
+    this->m_log->add(new LogCCObject(obj));
+    return *this;
+}
+
+LogStream& LogStream::operator<<(Severity severity) {
+    this->init();
+    this->m_log->m_severity = severity;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(std::string const& str) {
+    this->init();
+    this->m_stream << str;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(std::string_view const& str) {
+    this->init();
+    this->m_stream << str;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(const char* str) {
+    this->init();
+    this->m_stream << str;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(int n) {
+    this->init();
+    this->m_stream << n;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(long n) {
+    this->init();
+    this->m_stream << n;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(float n) {
+    this->init();
+    this->m_stream << n;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(double n) {
+    this->init();
+    this->m_stream << n;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(cocos2d::CCPoint const& pos) {
+    this->init();
+    this->m_stream << pos.x << ", " << pos.y;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(cocos2d::CCSize const& size) {
+    this->init();
+    this->m_stream << size.width << " : " << size.height;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(cocos2d::CCRect const& rect) {
+    this->init();
+    this->m_stream << rect.origin << " | " << rect.size;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(::endl_type) {
+    this->finish();
+    return *this;
+}
+
+LogStream::~LogStream() {
+    if (this->m_log) {
+        delete this->m_log;
+    }
+}
+

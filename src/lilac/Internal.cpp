@@ -18,6 +18,12 @@ Lilac* Lilac::get() {
     return g_lilac;
 }
 
+bool Lilac::setup() {
+    this->loadHooks();
+
+    return true;
+}
+
 void Lilac::setupPlatformConsole() {
     if (AllocConsole() == 0)
         return;

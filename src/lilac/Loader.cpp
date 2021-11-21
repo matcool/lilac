@@ -3,6 +3,8 @@
 #include <Log.hpp>
 #include <Loader.hpp>
 #include <utils.hpp>
+#include <Internal.hpp>
+#include <SharedMod.hpp>
 
 USE_LILAC_NAMESPACE();
 
@@ -15,6 +17,53 @@ void Loader::createDirectories() {
     directory_create(const_join_path_c_str<lilac_directory>);
     directory_create(const_join_path_c_str<lilac_directory, lilac_resource_directory>);
     directory_create(const_join_path_c_str<lilac_directory, lilac_mod_directory>);
+}
+
+bool Loader::handleSharedModLoad(Mod* mod) {
+    for (auto const& [dep_id, value] : mod->m_dependencies) {
+        auto& [type, resolved] = value;
+        if (type == DependencyType::SharedMod && resolved) {
+            auto dep = dynamic_cast<SharedMod*>(this->getLoadedMod(dep_id.c_str()));
+            if (dep) {
+                auto res = dep->loadMod(mod);
+                if (!res) {
+                    mod->throwError(res.error(), Severity::Error);
+                    return false;
+                }
+            }
+        }
+    }
+}
+
+void Loader::handleSharedModDependencies(Mod* mod, void(SharedMod::*member)(Mod*)) {
+    for (auto const& [dep_id, value] : mod->m_dependencies) {
+        auto& [type, resolved] = value;
+        if (type == DependencyType::SharedMod && resolved) {
+            auto dep = dynamic_cast<SharedMod*>(this->getLoadedMod(dep_id.c_str()));
+            if (dep) {
+                (dep->*member)(mod);
+            }
+        }
+    }
+}
+
+bool Loader::checkDependencies(Mod* mod) {
+    if (!mod->m_dependencies.size()) {
+        return true;
+    }
+
+    size_t unresolved_count = 0;
+    for (auto & [dep_id, value] : mod->m_dependencies) {
+        auto& [type, resolved] = value;
+        resolved = this->isModLoaded(dep_id.c_str());
+        if (!resolved) {
+            if (type != DependencyType::Optional) {
+                unresolved_count++;
+            }
+        }
+    }
+
+    return unresolved_count;
 }
 
 size_t Loader::updateMods() {
@@ -64,9 +113,20 @@ std::vector<Mod*> Loader::getLoadedMods() {
     return this->m_loadedMods;
 }
 
+void Loader::unloadMod(Mod* mod) {
+    this->handleSharedModDependencies(mod, &SharedMod::unloadMod);
+    vector_erase(this->m_loadedMods, mod);
+    // ~Mod will call FreeLibrary 
+    // automatically
+    delete mod;
+}
+
 bool Loader::setup() {
     if (this->m_isSetup)
         return true;
+    
+    if (!Lilac::get()->setup())
+        return false;
 
     this->createDirectories();
     this->updateMods();
@@ -76,73 +136,52 @@ bool Loader::setup() {
     return true;
 }
 
-void Loader::loadData() {
-    for (auto const& Mod : this->m_loadedMods) {
-        Mod->loadData();
-    }
-}
-
-void Loader::saveData() {
-    for (auto const& Mod : this->m_loadedMods) {
-        Mod->saveData();
-    }
-}
-
 Loader::Loader() {
-    // this->m_pLogStream = new BGDLogStream;
+    this->m_logStream = new LogStream;
 }
 
 Loader::~Loader() {
     for (auto const& Mod : this->m_loadedMods) {
         delete Mod;
     }
-    // for (auto const& log : this->m_vLogs) {
-    //     delete log;
-    // }
-    // delete this->m_pLogStream;
+    for (auto const& log : this->m_logs) {
+        delete log;
+    }
+    delete this->m_logStream;
 }
 
-// void Loader::log(BGDLogMessage* log) {
-//     this->m_vLogs.push_back(log);
-// }
+LogStream& Loader::logStream() {
+    return *this->m_logStream;
+}
 
-// void Loader::deleteLog(BGDLogMessage* log) {
-//     vector_erase(this->m_vLogs, log);
-//     delete log;
-// }
+void Loader::log(LogMessage* log) {
+    this->m_logs.push_back(log);
+}
 
-// std::vector<BGDLogMessage*> const& Loader::getLogs() const {
-//     return this->m_vLogs;
-// }
+void Loader::deleteLog(LogMessage* log) {
+    vector_erase(this->m_logs, log);
+    delete log;
+}
 
-// std::vector<BGDLogMessage*> Loader::getLogs(
-//     std::initializer_list<BGDLogType>  typeFilter,
-//     std::initializer_list<BGDSeverity> severityFilter
-// ) {
-//     if (
-//         !typeFilter.size() && !severityFilter.size()
-//     ) {
-//         return this->m_vLogs;
-//     }
+std::vector<LogMessage*> const& Loader::getLogs() const {
+    return this->m_logs;
+}
 
-//     std::vector<BGDLogMessage*> logs;
+std::vector<LogMessage*> Loader::getLogs(
+    std::initializer_list<Severity> severityFilter
+) {
+    if (!severityFilter.size()) {
+        return this->m_logs;
+    }
 
-//     for (auto const& log : this->m_vLogs) {
-//         for (auto const& type : typeFilter) {
-//             if (log->getType() == type) {
-//                 logs.push_back(log);
-//                 goto found_this;
-//             }
-//         }
-//         for (auto const& severity : severityFilter) {
-//             if (log->getSeverity() == severity) {
-//                 logs.push_back(log);
-//                 goto found_this;
-//             }
-//         }
-//         found_this:;
-//     }
+    std::vector<LogMessage*> logs;
 
-//     return logs;
-// }
+    for (auto const& log : this->m_logs) {
+        if (vector_contains<Severity>(severityFilter, log->getSeverity())) {
+            logs.push_back(log);
+        }
+    }
+
+    return logs;
+}
 

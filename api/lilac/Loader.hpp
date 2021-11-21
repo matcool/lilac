@@ -1,8 +1,14 @@
 #pragma once
 
 #include "Macros.hpp"
+#include "Types.hpp"
+#include <string_view>
+#include <vector>
+#include <string>
 
 namespace lilac {
+    #pragma warning(disable: 4251)
+
     static constexpr const std::string_view lilac_directory          = "lilac";
     static constexpr const std::string_view lilac_mod_directory      = "mods";
     static constexpr const std::string_view lilac_resource_directory = "resources";
@@ -13,14 +19,16 @@ namespace lilac {
     class Mod;
     class SharedMod;
     class Hook;
+    class LogStream;
+    class LogMessage;
 
     class LILAC_DLL Loader {
         protected:
             std::vector<Mod*> m_loadedMods;
             std::vector<SharedMod*> m_sharedMods;
             std::vector<std::string> m_searchPaths;
-            // std::vector<LogMessage*> m_vLogs;
-            // BGDLogStream* m_pLogStream;
+            std::vector<LogMessage*> m_logs;
+            LogStream* m_logStream;
             bool m_isSetup = false;
 
             Loader();
@@ -28,7 +36,11 @@ namespace lilac {
 
             void createDirectories();
             bool loadModFromFile(std::string const& file);
+            bool checkDependencies(Mod* mod);
+            void handleSharedModDependencies(Mod* mod, void(SharedMod::* member)(Mod*));
+            bool handleSharedModLoad(Mod* mod);
 
+            friend class Mod;
             friend class SharedMod;
             
         public:
@@ -36,24 +48,20 @@ namespace lilac {
             bool setup();
             size_t updateMods();
 
-            void saveData();
-            void loadData();
-
-            // inline BGDLogStream& logStream() {
-            //     return *this->m_pLogStream;
-            // }
-
-            // void log(BGDLogMessage* log);
-            // void deleteLog(BGDLogMessage* log);
-            // std::vector<BGDLogMessage*> const& getLogs() const;
-            // std::vector<BGDLogMessage*> getLogs(
-                // std::initializer_list<BGDLogType>  typeFilter,
-                // std::initializer_list<BGDSeverity> severityFilter = {}
-            // );
+            LogStream& logStream();
+            void log(LogMessage* log);
+            void deleteLog(LogMessage* log);
+            std::vector<LogMessage*> const& getLogs() const;
+            std::vector<LogMessage*> getLogs(
+                std::initializer_list<Severity> severityFilter
+            );
     
             bool isModLoaded(std::string_view const& id);
             Mod* getLoadedMod(std::string_view const& id);
             std::vector<Mod*> getLoadedMods();
+            void unloadMod(Mod* mod);
             bool isSharedModLoaded(std::string_view const& id);
     };
+
+    #pragma warning(default: 4251)
 }
