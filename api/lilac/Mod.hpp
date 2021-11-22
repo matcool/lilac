@@ -3,6 +3,7 @@
 #include "Macros.hpp"
 #include "Types.hpp"
 #include "Result.hpp"
+#include "VersionInfo.hpp"
 #include <string_view>
 #include <vector>
 #include <unordered_map>
@@ -97,6 +98,10 @@ namespace lilac {
             void enableBase();
 
         protected:
+            /**
+             * Mod Version. Should follow semver.
+             */
+            VersionInfo m_version;
             /**
              * Human-readable ID of the Mod.
              * Recommended to be in the format
@@ -204,6 +209,7 @@ namespace lilac {
             std::string_view getDetails()    const;
             std::string_view getCredits()    const;
             std::string_view getPath()       const;
+            VersionInfo      getVersion()    const;
             bool             isEnabled()     const;
 
             /**

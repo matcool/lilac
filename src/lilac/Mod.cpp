@@ -7,7 +7,7 @@
 
 USE_LILAC_NAMESPACE();
 
-Mod::Mod() {}
+Mod::Mod() : m_version(1, 0, 0) {}
 
 Mod::~Mod() {
     this->platformCleanup();
@@ -58,6 +58,10 @@ decltype(Mod::m_details) Mod::getDetails() const {
 
 decltype(Mod::m_path) Mod::getPath() const {
     return this->m_path;
+}
+
+VersionInfo Mod::getVersion() const {
+    return this->m_version;
 }
 
 bool Mod::isEnabled() const {
