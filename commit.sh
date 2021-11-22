@@ -10,7 +10,7 @@ if [ $1 == "pull" ]; then
     git pull origin main
     cd ../..
 
-    submodules/core
+    cd submodules/core
     git pull origin main
     cd ../..
 
