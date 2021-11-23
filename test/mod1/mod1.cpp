@@ -11,6 +11,10 @@ void TestMod1::setup() {
     this->m_version     = { 1, 0, 0 };
 }
 
+void TestMod1::logMessage(std::string_view const& msg) {
+    this->log() << "Logged by TestMod1: " << msg << "\n";
+}
+
 TestMod1* TestMod1::get() {
     auto g_mod = new TestMod1;
     return g_mod;

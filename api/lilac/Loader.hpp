@@ -17,31 +17,30 @@ namespace lilac {
                                                                        LILAC_ANDROID(".so");
 
     class Mod;
-    class SharedMod;
+    class CustomLoader;
     class Hook;
     class LogStream;
     class LogMessage;
 
     class LILAC_DLL Loader {
         protected:
-            std::vector<Mod*> m_loadedMods;
-            std::vector<SharedMod*> m_sharedMods;
-            std::vector<std::string> m_searchPaths;
+            std::vector<Mod*> m_mods;
+            std::vector<CustomLoader*> m_CustomLoaders;
             std::vector<LogMessage*> m_logs;
             LogStream* m_logStream;
             bool m_isSetup = false;
 
             Loader();
             virtual ~Loader();
-
-            void createDirectories();
+            
             bool loadModFromFile(std::string const& file);
+            void createDirectories();
             bool checkDependencies(Mod* mod);
-            void handleSharedModDependencies(Mod* mod, void(SharedMod::* member)(Mod*));
-            bool handleSharedModLoad(Mod* mod);
+            void handleCustomLoaderDependencies(Mod* mod, void(CustomLoader::* member)(Mod*));
+            bool handleCustomLoaderLoad(Mod* mod);
 
             friend class Mod;
-            friend class SharedMod;
+            friend class CustomLoader;
             
         public:
             static Loader* get();
@@ -60,7 +59,7 @@ namespace lilac {
             Mod* getLoadedMod(std::string_view const& id);
             std::vector<Mod*> getLoadedMods();
             void unloadMod(Mod* mod);
-            bool isSharedModLoaded(std::string_view const& id);
+            bool isCustomLoaderLoaded(std::string_view const& id);
     };
 
     #pragma warning(default: 4251)

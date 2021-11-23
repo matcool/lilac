@@ -24,7 +24,7 @@ namespace lilac {
     enum class DependencyType {
         Optional,
         Required,
-        SharedMod,
+        CustomLoader,
     };
 
     /**
@@ -194,6 +194,9 @@ namespace lilac {
             Mod(Mod const&)           = delete;
             Mod operator=(Mod const&) = delete;
             
+            /**
+             * Protected constructor/destructor
+             */
             Mod();
             virtual ~Mod();
 

@@ -2,7 +2,7 @@
 #include <Mod.hpp>
 #include <Log.hpp>
 #include <Loader.hpp>
-#include <SharedMod.hpp>
+#include <CustomLoader.hpp>
 #include <utils/utils.hpp>
 
 USE_LILAC_NAMESPACE();
@@ -22,13 +22,13 @@ void Mod::disable() {}
 
 void Mod::disableBase() {
     this->m_enabled = false;
-    Loader::get()->handleSharedModDependencies(this, &SharedMod::disableMod);
+    Loader::get()->handleCustomLoaderDependencies(this, &CustomLoader::disableMod);
     this->disable();
 }
 
 void Mod::enableBase() {
     this->m_enabled = true;
-    Loader::get()->handleSharedModDependencies(this, &SharedMod::enableMod);
+    Loader::get()->handleCustomLoaderDependencies(this, &CustomLoader::enableMod);
     this->enable();
 }
 

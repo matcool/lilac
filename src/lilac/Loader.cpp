@@ -4,7 +4,7 @@
 #include <Loader.hpp>
 #include <utils.hpp>
 #include <Internal.hpp>
-#include <SharedMod.hpp>
+#include <CustomLoader.hpp>
 
 USE_LILAC_NAMESPACE();
 
@@ -19,11 +19,11 @@ void Loader::createDirectories() {
     directory_create(const_join_path_c_str<lilac_directory, lilac_mod_directory>);
 }
 
-bool Loader::handleSharedModLoad(Mod* mod) {
+bool Loader::handleCustomLoaderLoad(Mod* mod) {
     for (auto const& [dep_id, value] : mod->m_dependencies) {
         auto& [type, resolved] = value;
-        if (type == DependencyType::SharedMod && resolved) {
-            auto dep = dynamic_cast<SharedMod*>(this->getLoadedMod(dep_id.c_str()));
+        if (type == DependencyType::CustomLoader && resolved) {
+            auto dep = dynamic_cast<CustomLoader*>(this->getLoadedMod(dep_id.c_str()));
             if (dep) {
                 auto res = dep->loadMod(mod);
                 if (!res) {
@@ -35,11 +35,11 @@ bool Loader::handleSharedModLoad(Mod* mod) {
     }
 }
 
-void Loader::handleSharedModDependencies(Mod* mod, void(SharedMod::*member)(Mod*)) {
+void Loader::handleCustomLoaderDependencies(Mod* mod, void(CustomLoader::*member)(Mod*)) {
     for (auto const& [dep_id, value] : mod->m_dependencies) {
         auto& [type, resolved] = value;
-        if (type == DependencyType::SharedMod && resolved) {
-            auto dep = dynamic_cast<SharedMod*>(this->getLoadedMod(dep_id.c_str()));
+        if (type == DependencyType::CustomLoader && resolved) {
+            auto dep = dynamic_cast<CustomLoader*>(this->getLoadedMod(dep_id.c_str()));
             if (dep) {
                 (dep->*member)(mod);
             }
@@ -77,7 +77,7 @@ size_t Loader::updateMods() {
             entry.path().extension() == lilac_mod_extension
         ) {
             if (!vector_contains<Mod*>(
-                this->m_loadedMods,
+                this->m_mods,
                 [entry](Mod* p) -> bool {
                     return p->m_path == entry.path().string();
                 }
@@ -93,7 +93,7 @@ size_t Loader::updateMods() {
 
 bool Loader::isModLoaded(std::string_view const& id) {
     return vector_contains<Mod*>(
-        this->m_loadedMods,
+        this->m_mods,
         [id](Mod* p) -> bool {
             return p->m_id == id;
         }
@@ -102,7 +102,7 @@ bool Loader::isModLoaded(std::string_view const& id) {
 
 Mod* Loader::getLoadedMod(std::string_view const& id) {
     return vector_select<Mod*>(
-        this->m_loadedMods,
+        this->m_mods,
         [id](Mod* p) -> bool {
             return p->m_id == id;
         }
@@ -110,12 +110,12 @@ Mod* Loader::getLoadedMod(std::string_view const& id) {
 }
 
 std::vector<Mod*> Loader::getLoadedMods() {
-    return this->m_loadedMods;
+    return this->m_mods;
 }
 
 void Loader::unloadMod(Mod* mod) {
-    this->handleSharedModDependencies(mod, &SharedMod::unloadMod);
-    vector_erase(this->m_loadedMods, mod);
+    this->handleCustomLoaderDependencies(mod, &CustomLoader::unloadMod);
+    vector_erase(this->m_mods, mod);
     // ~Mod will call FreeLibrary 
     // automatically
     delete mod;
@@ -141,7 +141,7 @@ Loader::Loader() {
 }
 
 Loader::~Loader() {
-    for (auto const& Mod : this->m_loadedMods) {
+    for (auto const& Mod : this->m_mods) {
         delete Mod;
     }
     for (auto const& log : this->m_logs) {
