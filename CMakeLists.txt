@@ -28,6 +28,7 @@ include_directories(
   "${CMAKE_SOURCE_DIR}/api/utils"
   "${CMAKE_SOURCE_DIR}/src"
   "${CMAKE_SOURCE_DIR}/src/lilac"
+  "${CMAKE_SOURCE_DIR}/src/lilac/internal"
   "${CMAKE_SOURCE_DIR}/submodules/core/include"
 )
 
@@ -35,3 +36,5 @@ add_compile_definitions(_EXPORTING)
 add_compile_definitions(LILAC_PLATFORM_CONSOLE)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
+
+add_subdirectory(test)

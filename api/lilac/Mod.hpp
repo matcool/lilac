@@ -273,7 +273,5 @@ namespace lilac {
             Result<> removeHook(Hook* hook);
     };
 
-    typedef Mod* (__stdcall* lilac_load_type)();
-
     #pragma warning(default: 4251)
 }

@@ -1,6 +1,7 @@
 ${workspaceFolder}
 ${workspaceFolder}/src
 ${workspaceFolder}/src/lilac
+${workspaceFolder}/src/lilac/internal
 ${workspaceFolder}/api
 ${workspaceFolder}/api/lilac
 ${workspaceFolder}/api/utils
