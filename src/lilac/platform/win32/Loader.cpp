@@ -2,7 +2,6 @@
 
 #include <Loader.hpp>
 #include <Mod.hpp>
-#include <CustomLoader.hpp>
 
 #ifdef LILAC_IS_WIN32
 
@@ -22,18 +21,14 @@ bool Loader::loadModFromFile(std::string const& path) {
             auto mod = loadFunc();
             if (mod) {
                 mod->setup();
+                // todo: fix dependencies (this does not work.)
                 if (this->checkDependencies(mod)) {
                     mod->m_enabled = true;
                 } else {
                     mod->disableBase();
                 }
-                this->handleCustomLoaderLoad(mod);
                 mod->m_platformInfo = new PlatformInfo { load };
                 mod->m_path = path.c_str();
-                auto as_shared = dynamic_cast<CustomLoader*>(mod);
-                if (as_shared) {
-                    this->m_CustomLoaders.push_back(as_shared);
-                }
                 this->m_mods.push_back(mod);
                 return true;
             }

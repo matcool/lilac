@@ -11,17 +11,17 @@ VersionInfo::VersionInfo(int major, int minor, int patch) {
 }
 
 VersionInfo::VersionInfo(const char* versionString) {
-    if (!std::sscanf(
+    if (!sscanf_s(
         versionString, "v%d.%d.%d",
-        this->m_major, this->m_minor, this->m_patch
+        &this->m_major, &this->m_minor, &this->m_patch
     ))
-    if (!std::sscanf(
+    if (!sscanf_s(
         versionString, "%d.%d.%d",
-        this->m_major, this->m_minor, this->m_patch
+        &this->m_major, &this->m_minor, &this->m_patch
     ))
-    std::sscanf(
+    sscanf_s(
         versionString, "%d %d %d",
-        this->m_major, this->m_minor, this->m_patch
+        &this->m_major, &this->m_minor, &this->m_patch
     );
 }
 

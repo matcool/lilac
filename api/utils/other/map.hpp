@@ -123,7 +123,7 @@ namespace lilac::utils {
     template<class T1, class V1, class T2, class V2>
     std::unordered_map<T2, V2> map_remap(
         std::unordered_map<T1, V1> const& map,
-        std::function<std::tuple<T2, V2>(std::tuple<T1, V1>)> remapFunc
+        std::function<std::pair<T2, V2>(std::pair<T1, V1>)> remapFunc
     ) {
         std::unordered_map<T2, V2> res;
         for (auto const& [t, v] : map) {

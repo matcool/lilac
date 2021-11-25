@@ -4,8 +4,6 @@
 #include <inttypes.h>
 
 namespace lilac {
-    using address_t = uintptr_t;
-
     class Mod;
     class ModBase;
     class Loader;
@@ -41,7 +39,7 @@ namespace lilac {
              * @returns Address
              * @author HJfod
              */
-            address_t getAddress() const { return reinterpret_cast<address_t>(m_address); }
+            uintptr_t getAddress() const { return reinterpret_cast<uintptr_t>(m_address); }
 
             /**
              * Get whether the hook is enabled or not.

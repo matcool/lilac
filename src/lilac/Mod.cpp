@@ -2,7 +2,6 @@
 #include <Mod.hpp>
 #include <Log.hpp>
 #include <Loader.hpp>
-#include <CustomLoader.hpp>
 #include <utils/utils.hpp>
 
 USE_LILAC_NAMESPACE();
@@ -22,13 +21,11 @@ void Mod::disable() {}
 
 void Mod::disableBase() {
     this->m_enabled = false;
-    Loader::get()->handleCustomLoaderDependencies(this, &CustomLoader::disableMod);
     this->disable();
 }
 
 void Mod::enableBase() {
     this->m_enabled = true;
-    Loader::get()->handleCustomLoaderDependencies(this, &CustomLoader::enableMod);
     this->enable();
 }
 
@@ -76,7 +73,7 @@ void Mod::setDependencies(std::unordered_map<std::string, DependencyType> const&
     this->m_dependencies = map_remap<
         std::string, DependencyType,
         std::string, Dependency
-    >(dependencies, [](std::tuple<std::string, DependencyType> val) -> std::tuple<std::string, Dependency> {
+    >(dependencies, [](std::pair<std::string, DependencyType> val) -> std::pair<std::string, Dependency> {
         return { std::get<0>(val), { std::get<1>(val), false } };
     });
 }

@@ -17,7 +17,6 @@ namespace lilac {
                                                                        LILAC_ANDROID(".so");
 
     class Mod;
-    class CustomLoader;
     class Hook;
     class LogStream;
     class LogMessage;
@@ -25,7 +24,6 @@ namespace lilac {
     class LILAC_DLL Loader {
         protected:
             std::vector<Mod*> m_mods;
-            std::vector<CustomLoader*> m_CustomLoaders;
             std::vector<LogMessage*> m_logs;
             LogStream* m_logStream;
             bool m_isSetup = false;
@@ -36,8 +34,6 @@ namespace lilac {
             bool loadModFromFile(std::string const& file);
             void createDirectories();
             bool checkDependencies(Mod* mod);
-            void handleCustomLoaderDependencies(Mod* mod, void(CustomLoader::* member)(Mod*));
-            bool handleCustomLoaderLoad(Mod* mod);
 
             friend class Mod;
             friend class CustomLoader;

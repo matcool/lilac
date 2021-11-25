@@ -25,27 +25,4 @@ namespace lilac::cast {
         x.t = v;
         return x.r;
     }
-
-    #ifndef LILAC_NO_CRINGE
-
-    /**
-     * Cast from any type to an enum,
-     * provided it is the same size as
-     * `int`
-     */
-    template<typename E, typename T>
-    static constexpr E enum_cast(T type) {
-        return static_cast<E>(reinterpret_cast<int>(type));
-    }
-
-    /**
-     * Cast from any type to bool
-     * without compiler warnings
-     */
-    template <typename T>
-    static constexpr bool bool_cast(T const v) {
-        return static_cast<bool>(reinterpret_cast<int>(v));
-    }
-
-    #endif
 }

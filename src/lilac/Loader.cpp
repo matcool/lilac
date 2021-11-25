@@ -4,7 +4,6 @@
 #include <Loader.hpp>
 #include <utils.hpp>
 #include <Internal.hpp>
-#include <CustomLoader.hpp>
 
 USE_LILAC_NAMESPACE();
 
@@ -17,34 +16,6 @@ void Loader::createDirectories() {
     directory_create(const_join_path_c_str<lilac_directory>);
     directory_create(const_join_path_c_str<lilac_directory, lilac_resource_directory>);
     directory_create(const_join_path_c_str<lilac_directory, lilac_mod_directory>);
-}
-
-bool Loader::handleCustomLoaderLoad(Mod* mod) {
-    for (auto const& [dep_id, value] : mod->m_dependencies) {
-        auto& [type, resolved] = value;
-        if (type == DependencyType::CustomLoader && resolved) {
-            auto dep = dynamic_cast<CustomLoader*>(this->getLoadedMod(dep_id.c_str()));
-            if (dep) {
-                auto res = dep->loadMod(mod);
-                if (!res) {
-                    mod->throwError(res.error(), Severity::Error);
-                    return false;
-                }
-            }
-        }
-    }
-}
-
-void Loader::handleCustomLoaderDependencies(Mod* mod, void(CustomLoader::*member)(Mod*)) {
-    for (auto const& [dep_id, value] : mod->m_dependencies) {
-        auto& [type, resolved] = value;
-        if (type == DependencyType::CustomLoader && resolved) {
-            auto dep = dynamic_cast<CustomLoader*>(this->getLoadedMod(dep_id.c_str()));
-            if (dep) {
-                (dep->*member)(mod);
-            }
-        }
-    }
 }
 
 bool Loader::checkDependencies(Mod* mod) {
@@ -114,7 +85,6 @@ std::vector<Mod*> Loader::getLoadedMods() {
 }
 
 void Loader::unloadMod(Mod* mod) {
-    this->handleCustomLoaderDependencies(mod, &CustomLoader::unloadMod);
     vector_erase(this->m_mods, mod);
     // ~Mod will call FreeLibrary 
     // automatically
