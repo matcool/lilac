@@ -1,5 +1,19 @@
 #include "mod2.hpp"
 
+bool (__fastcall *GJGarageLayer_init_o)(CCLayer*);
+bool __fastcall GJGarageLayer_init(CCLayer* self) {
+    if (!GJGarageLayer_init_o(self))
+        return false;
+    
+    if (Loader::get()->isModLoaded("com.lilac.test_one")) {
+        TestMod1::get()->logMessage("Hi from TestMod2");
+    } else {
+        TestMod2::get()->log() << "TestMod1 is not loaded :(" << lilac::endl;
+    }
+
+    return true;
+}
+
 void TestMod2::setup() {
     this->m_id          = "com.lilac.test_two";
     this->m_name        = "Lilac Test 2";
@@ -13,6 +27,12 @@ void TestMod2::setup() {
     this->setDependencies({
         { "com.lilac.test_one", DependencyType::Required }
     });
+
+    this->addHook(
+        gd_base + 0x1255d0,
+        &GJGarageLayer_init,
+        as<void**>(&GJGarageLayer_init_o)
+    );
 }
 
 TestMod2* TestMod2::get() {

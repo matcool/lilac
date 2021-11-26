@@ -4,6 +4,7 @@
 #include <Loader.hpp>
 #include <utils.hpp>
 #include <Internal.hpp>
+#include <InternalMod.hpp>
 
 USE_LILAC_NAMESPACE();
 
@@ -38,6 +39,11 @@ bool Loader::checkDependencies(Mod* mod) {
 }
 
 size_t Loader::updateMods() {
+    InternalMod::get()->log()
+        << Severity::Debug
+        << "Loading mods..."
+        << lilac::endl;
+
     size_t loaded = 0;
     this->createDirectories();
     for (auto const& entry : std::filesystem::directory_iterator(
@@ -47,6 +53,10 @@ size_t Loader::updateMods() {
             std::filesystem::is_regular_file(entry) &&
             entry.path().extension() == lilac_mod_extension
         ) {
+            InternalMod::get()->log()
+                << Severity::Debug
+                << "Loading " << entry.path().string()
+                << lilac::endl;
             if (!vector_contains<Mod*>(
                 this->m_mods,
                 [entry](Mod* p) -> bool {
@@ -94,9 +104,11 @@ void Loader::unloadMod(Mod* mod) {
 bool Loader::setup() {
     if (this->m_isSetup)
         return true;
-    
-    if (!Lilac::get()->setup())
-        return false;
+
+    InternalMod::get()->log()
+        << Severity::Debug
+        << "Setting up Loader..."
+        << lilac::endl;
 
     this->createDirectories();
     this->updateMods();

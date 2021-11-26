@@ -11,7 +11,7 @@ add_library(${PROJECT_NAME} SHARED mod2.cpp)
 remove_definitions(-D_EXPORTING_LILAC_MOD)
 
 set(WIN32 ON)
-set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
+set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" LINK_FLAGS "/DELAYLOAD:TestMod1.dll")
 
 target_link_libraries(
     ${PROJECT_NAME}

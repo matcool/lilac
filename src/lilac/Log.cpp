@@ -4,6 +4,7 @@
 #include <Loader.hpp>
 #include <utils/other/general.hpp>
 #include <utils/gd/stream.hpp>
+#include <Internal.hpp>
 
 USE_LILAC_NAMESPACE();
 
@@ -95,14 +96,28 @@ void LogStream::save() {
     }
 }
 
-void LogStream::finish() {
+void LogStream::log() {
     this->init();
     this->save();
 
     Loader::get()->log(this->m_log);
 
     #ifdef LILAC_PLATFORM_CONSOLE
-    std::cout << this->m_log->toString(true) << "\n";
+    if (Lilac::get()->platformConsoleReady()) {
+        std::cout << this->m_log->toString(true);
+    }
+    #endif
+}
+
+void LogStream::finish() {
+    this->log();
+
+    #ifdef LILAC_PLATFORM_CONSOLE
+    if (Lilac::get()->platformConsoleReady()) {
+        std::cout << "\n";
+    } else {
+        Lilac::get()->queueConsoleMessage(this->m_log);
+    }
     #endif
 
     // Loader manages this memory now
@@ -195,8 +210,13 @@ LogStream& LogStream::operator<<(cocos2d::CCRect const& rect) {
     return *this;
 }
 
-LogStream& LogStream::operator<<(::endl_type) {
+LogStream& LogStream::operator<<(lilac::endl_type) {
     this->finish();
+    return *this;
+}
+
+LogStream& LogStream::operator<<(lilac::continue_type) {
+    this->log();
     return *this;
 }
 

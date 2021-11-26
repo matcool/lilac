@@ -9,6 +9,8 @@ void TestMod1::setup() {
                           "loading and sharing interfaces works.";
     this->m_credits     = "";
     this->m_version     = { 1, 0, 0 };
+
+    this->logMessage("Hi from TestMod1");
 }
 
 void TestMod1::logMessage(std::string_view const& msg) {

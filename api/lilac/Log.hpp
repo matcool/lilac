@@ -4,6 +4,7 @@
 #include "Types.hpp"
 #include <chrono>
 #include <sstream>
+#include <vector>
 
 namespace cocos2d {
     class CCObject;
@@ -125,10 +126,23 @@ namespace lilac {
             std::string toString(bool logTime = true) const;
     };
 
+    /**
+     * End logging and print message to 
+     * the console.
+     */
     struct endl_type {
         constexpr endl_type() {}
     };
     constexpr const auto endl = endl_type();
+
+    /**
+     * Print message to the console without 
+     * a newline and continue logging to it.
+     */
+    struct continue_type {
+        constexpr continue_type() {}
+    };
+    constexpr const auto conl = continue_type();
 
     class LILAC_DLL LogStream {
         protected:
@@ -138,6 +152,7 @@ namespace lilac {
             void init();
             void save();
             void finish();
+            void log();
 
         public:
             LogStream& operator<<(Mod*);
@@ -155,6 +170,7 @@ namespace lilac {
             LogStream& operator<<(cocos2d::CCSize const&);
             LogStream& operator<<(cocos2d::CCRect const&);
             LogStream& operator<<(endl_type);
+            LogStream& operator<<(continue_type);
 
             ~LogStream();
     };

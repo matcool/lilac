@@ -6,6 +6,8 @@
 #include <vector>
 #include <string>
 
+class Lilac;
+
 namespace lilac {
     #pragma warning(disable: 4251)
 
@@ -37,6 +39,7 @@ namespace lilac {
 
             friend class Mod;
             friend class CustomLoader;
+            friend class Lilac;
             
         public:
             static Loader* get();
