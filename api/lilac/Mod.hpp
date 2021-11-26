@@ -243,8 +243,26 @@ namespace lilac {
             std::vector<Hook*> getHooks() const;
 
             /**
+             * Create a hook at an address. Call the original 
+             * function by calling the original function – 
+             * no trampoline needed
+             * @param address The absolute address of 
+             * the function to hook, i.e. gd_base + 0xXXXX
+             * @param detour Pointer to your detour function
+             * @returns Successful result containing the 
+             * Hook handle, errorful result with info on 
+             * error
+             */
+            Result<Hook*> addHook(void* address, void* detour);
+
+            /**
              * Create a hook at an address with a detour
              * and trampoline
+             * @param address The absolute address of 
+             * the function to hook, i.e. gd_base + 0xXXXX
+             * @param detour Pointer to your detour function
+             * @param trampoline Pointer to a function pointer 
+             * used to call the original
              * @returns Successful result containing the 
              * Hook handle, errorful result with info on 
              * error

@@ -80,8 +80,7 @@ Result<> Mod::removeHook(Hook* hook) {
     return res;
 }
 
-Result<Hook*> Mod::addHook(void* addr, void* detour, void** trampoline) {
-    *trampoline = addr;
+Result<Hook*> Mod::addHook(void* addr, void* detour) {
     if (g_readyToHook) {
         return this->addHookBase(addr, detour);
     } else {
@@ -91,6 +90,11 @@ Result<Hook*> Mod::addHook(void* addr, void* detour, void** trampoline) {
         g_hooks.push_back({ hook, this });
         return Ok<Hook*>(hook);
     }
+}
+
+Result<Hook*> Mod::addHook(void* addr, void* detour, void** trampoline) {
+    *trampoline = addr;
+    return this->addHook(addr, detour);
 }
 
 bool Lilac::loadHooks() {

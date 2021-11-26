@@ -1,5 +1,8 @@
 #include <utils/other/ext.hpp>
 #include <algorithm>
+
+#ifdef LILAC_IS_WIN32
+
 #include <cwctype>
 #include <Windows.h>
 #include <stringapiset.h>
@@ -8,7 +11,7 @@ std::string lilac::string_convert(std::wstring const& wstr) {
     int count = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), wstr.length(), NULL, 0, NULL, NULL);
     std::string str(count, 0);
     WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, &str[0], count, NULL, NULL);
-    return str;;
+    return str;
 }
 
 std::wstring lilac::string_convert(std::string const& str) {
@@ -17,6 +20,8 @@ std::wstring lilac::string_convert(std::string const& str) {
     MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.length(), &wstr[0], count);
     return wstr;
 }
+
+#endif
 
 bool lilac::string_ends_with(std::string const& str, std::string const& substr) {
     // https://stackoverflow.com/questions/874134/find-out-if-string-ends-with-another-string-in-c
