@@ -9,20 +9,20 @@ file(GLOB_RECURSE SOURCES
 
 add_library(lilac_loader SHARED ${SOURCES})
 
+set_target_properties(lilac_loader PROPERTIES PREFIX "" OUTPUT_NAME "lilac")
+
 add_subdirectory(submodules/meta)
 add_subdirectory(submodules/core)
-include("submodules/lib/include.cmake")
+add_subdirectory(submodules/lib)
 
 target_link_libraries(
   lilac_loader
   lilac_hook
-	"${CMAKE_SOURCE_DIR}/submodules/lib/include/cocos2dx/libcocos2d.lib"
-	"${CMAKE_SOURCE_DIR}/submodules/lib/include/extensions/libExtensions.lib"
-	"${CMAKE_SOURCE_DIR}/submodules/lib/include/fmod/lib/fmod_vc.lib"
-	# "${CMAKE_SOURCE_DIR}/submodules/lib/include/gd/libgd.lib"
+  lilac_lib
 )
 
 include_directories(
+  lilac_lib
   "${CMAKE_SOURCE_DIR}/api"
   "${CMAKE_SOURCE_DIR}/api/lilac"
   "${CMAKE_SOURCE_DIR}/api/utils"
