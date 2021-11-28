@@ -162,6 +162,7 @@ namespace lilac {
             LogStream& operator<<(std::string const&);
             LogStream& operator<<(std::string_view const&);
             LogStream& operator<<(const char*);
+            LogStream& operator<<(uintptr_t);
             LogStream& operator<<(int);
             LogStream& operator<<(long);
             LogStream& operator<<(float);
@@ -174,5 +175,4 @@ namespace lilac {
 
             ~LogStream();
     };
-    #pragma warning(default: 4251)
 }

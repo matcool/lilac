@@ -3,6 +3,7 @@ ${workspaceFolder}/src
 ${workspaceFolder}/src/lilac
 ${workspaceFolder}/src/lilac/internal
 ${workspaceFolder}/api
+${workspaceFolder}/api/keybinds
 ${workspaceFolder}/api/lilac
 ${workspaceFolder}/api/utils
 ${workspaceFolder}/submodules/core/include

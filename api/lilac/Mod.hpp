@@ -290,6 +290,4 @@ namespace lilac {
              */
             Result<> removeHook(Hook* hook);
     };
-
-    #pragma warning(default: 4251)
 }

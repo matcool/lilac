@@ -1,3 +1,4 @@
+#include <KeybindManager.hpp>
 #include "Internal.hpp"
 #include <Windows.h>
 #include <vector>
@@ -9,7 +10,8 @@
 #include <Loader.hpp>
 
 Lilac::Lilac() {
-    // todo: init internal stuff like default keybinds
+    // init KeybindManager & load default keybinds
+    KeybindManager::get();
 
     #ifdef LILAC_PLATFORM_CONSOLE
     this->setupPlatformConsole();

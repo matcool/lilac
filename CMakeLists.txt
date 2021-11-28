@@ -26,6 +26,7 @@ include_directories(
   "${CMAKE_SOURCE_DIR}/api"
   "${CMAKE_SOURCE_DIR}/api/lilac"
   "${CMAKE_SOURCE_DIR}/api/utils"
+  "${CMAKE_SOURCE_DIR}/api/keybinds"
   "${CMAKE_SOURCE_DIR}/src"
   "${CMAKE_SOURCE_DIR}/src/lilac"
   "${CMAKE_SOURCE_DIR}/src/lilac/internal"

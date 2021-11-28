@@ -13,5 +13,3 @@
 #include <cocos2d.h>
 #include <gd.hpp>
 #include <GUI/CCControlExtension/CCScale9Sprite.h>
-
-#pragma warning(default: 4067)

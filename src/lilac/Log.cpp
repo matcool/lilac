@@ -168,6 +168,12 @@ LogStream& LogStream::operator<<(const char* str) {
     return *this;
 }
 
+LogStream& LogStream::operator<<(uintptr_t n) {
+    this->init();
+    this->m_stream << n;
+    return *this;
+}
+
 LogStream& LogStream::operator<<(int n) {
     this->init();
     this->m_stream << n;

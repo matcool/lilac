@@ -61,5 +61,4 @@ namespace lilac {
             bool isCustomLoaderLoaded(std::string_view const& id);
     };
 
-    #pragma warning(default: 4251)
 }
