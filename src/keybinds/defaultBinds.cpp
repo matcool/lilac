@@ -1,4 +1,5 @@
 #include <KeybindManager.hpp>
+#include <InternalMod.hpp>
 
 USE_LILAC_NAMESPACE();
 
@@ -13,7 +14,7 @@ USE_LILAC_NAMESPACE();
 #define KBS(_mod_, _key_) { { KEY_##_key_, Keybind::km##_mod_ } }
 
 #define ADD_EDITOR_KB(_name_, _id_, _sub_, _func_, _desc_, _binds_)    \
-    this->addKeybindAction(TriggerableAction {                  \
+    this->addKeybindAction(owner, TriggerableAction {   \
         _name_, _id_, KB_EDITOR_CATEGORY, _sub_,                \
         [](CCNode* context, bool down) -> bool {                \
             _func_;                                             \
@@ -22,7 +23,9 @@ USE_LILAC_NAMESPACE();
 
 
 void KeybindManager::loadDefaultKeybinds() {
-    this->addKeybindAction(TriggerableAction {
+    auto owner = InternalMod::get();
+
+    this->addKeybindAction(owner, TriggerableAction {
         "Pause",
         "gd.play.pause",
         { KB_PLAY_CATEGORY, KB_EDITOR_CATEGORY },
@@ -41,7 +44,7 @@ void KeybindManager::loadDefaultKeybinds() {
         "Pause ingame / in the editor"_s
     }, {{ KEY_Escape, 0 }});
 
-    this->addKeybindAction(TriggerableAction {
+    this->addKeybindAction(owner, TriggerableAction {
         "Jump P1",
         "gd.play.jump_p1",
         { KB_PLAY_CATEGORY, KB_EDITOR_CATEGORY },
@@ -60,7 +63,7 @@ void KeybindManager::loadDefaultKeybinds() {
         "Player 1 Jump"_s
     }, {{ KEY_Space, 0 }});
 
-    this->addKeybindAction(TriggerableAction {
+    this->addKeybindAction(owner, TriggerableAction {
         "Jump P2",
         "gd.play.jump_p2",
         { KB_PLAY_CATEGORY, KB_EDITOR_CATEGORY },
@@ -81,7 +84,7 @@ void KeybindManager::loadDefaultKeybinds() {
         "Player 2 Jump"_s
     }, {{ KEY_Up, 0 }});
 
-    this->addKeybindAction(TriggerableAction {
+    this->addKeybindAction(owner, RepeatableAction {
         "Place Checkpoint",
         "gd.play.place_checkpoint",
         KB_PLAY_CATEGORY,
@@ -97,7 +100,7 @@ void KeybindManager::loadDefaultKeybinds() {
         "Place a Checkpoint in Practice Mode"_s
     }, {{ KEY_Z, 0 }});
 
-    this->addKeybindAction(TriggerableAction {
+    this->addKeybindAction(owner, RepeatableAction {
         "Delete Checkpoint",
         "gd.play.delete_checkpoint",
         KB_PLAY_CATEGORY,
@@ -148,7 +151,7 @@ void KeybindManager::loadDefaultKeybinds() {
     // this looks ugly as shit, but it's so when i fold it
     // in vs code i can see what keybind it is without
     // needing to unfold
-    this->addKeybindAction(KeybindModifier { "Swipe Modifier",
+    this->addKeybindAction(owner, KeybindModifier { "Swipe Modifier",
         "gd.edit.swipe_modifier",
         KB_EDITOR_CATEGORY,
         KB_SUBCATEGORY_GLOBAL,
@@ -156,7 +159,7 @@ void KeybindManager::loadDefaultKeybinds() {
         "in the editor enables swipe until the mouse is released"
     }, {{ Keybind::kmShift }});
 
-    this->addKeybindAction(KeybindModifier { "Move Modifier",
+    this->addKeybindAction(owner, KeybindModifier { "Move Modifier",
         "gd.edit.move_modifier",
         KB_EDITOR_CATEGORY,
         KB_SUBCATEGORY_GLOBAL,
@@ -164,7 +167,7 @@ void KeybindManager::loadDefaultKeybinds() {
         "move the screen around"
     }, {{ KEY_Space, 0 }});
 
-    this->addKeybindAction(KeybindModifier { "Free Move Modifier",
+    this->addKeybindAction(owner, KeybindModifier { "Free Move Modifier",
         "gd.edit.free_move_modifier",
         KB_EDITOR_CATEGORY,
         KB_SUBCATEGORY_GLOBAL,
@@ -172,7 +175,7 @@ void KeybindManager::loadDefaultKeybinds() {
         "until the mouse button is released"
     }, {{ Keybind::kmControl }});
 
-    this->addKeybindAction(KeybindModifier { "Copy Modifier",
+    this->addKeybindAction(owner, KeybindModifier { "Copy Modifier",
         "gd.edit.duplicate_modifier",
         KB_EDITOR_CATEGORY,
         KB_SUBCATEGORY_GLOBAL,

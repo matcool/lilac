@@ -6,10 +6,7 @@ bool __fastcall CCKeyboardDispatcher_dispatchKeyboardMSG(
     enumKeyCodes key,
     bool down
 ) {
-    InternalMod::get()->log() << "CCKeyboardDispatcher_dispatchKeyboardMSG" << lilac::endl;
-
     KeybindManager::get()->registerKeyPress(key, down);
-
     if (!KeybindManager::keyIsModifier(key)) {
         if (KeybindManager::get()->handleKeyEvent(
             KB_GLOBAL_CATEGORY,
@@ -40,7 +37,6 @@ public:
     static void __fastcall onGLFWMouseCallBack(
         CCEGLView_hook* self, edx_t, GLFWwindow* wnd, int btn, int pressed, int z
     ) {
-        std::cout << __FUNCTION__ << "\n";
         KeybindManager::get()->registerMousePress(
             static_cast<MouseButton>(btn), pressed
         );

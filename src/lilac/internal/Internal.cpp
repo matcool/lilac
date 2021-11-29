@@ -8,6 +8,7 @@
 #include "InternalMod.hpp"
 #include <Log.hpp>
 #include <Loader.hpp>
+#include <CLIManager.hpp>
 
 Lilac::Lilac() {
     // init KeybindManager & load default keybinds
@@ -41,6 +42,21 @@ bool Lilac::setup() {
 
     InternalMod::get()->log()
         << Severity::Debug << "Loaded hooks" << lilac::endl;
+
+    InternalMod::get()->addKeybindAction(TriggerableAction {
+        "Yeetus Feetus",
+        "lilac.yeetus",
+        KB_GLOBAL_CATEGORY,
+        [](auto node, bool down) -> bool {
+            if (down) {
+                FLAlertLayer::create(
+                    nullptr, "yea", "OK", nullptr,
+                    "woo wee"
+                )->show();
+            }
+            return false;
+        }
+    }, {{ KEY_G, Keybind::kmControl | Keybind::kmAlt }});
 
     return true;
 }
@@ -84,6 +100,8 @@ void Lilac::awaitPlatformConsole() {
 
     while (ss >> inpa) args.push_back(inpa);
     ss.clear();
+
+    CLIManager::get()->execute(args);
 
     if (inp != "e") this->awaitPlatformConsole();
 }

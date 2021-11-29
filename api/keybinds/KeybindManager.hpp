@@ -35,17 +35,21 @@ namespace lilac {
             
             KeybindManager();
             virtual ~KeybindManager();
+
+            bool addKeybindAction(
+                Mod*                     owner,
+                KeybindAction     const& action,
+                KeybindList       const& defaults,
+                keybind_action_id const& insertAfter = nullptr
+            );
+            bool removeKeybindAction(Mod* remover, keybind_action_id const& id);
+
+            friend class Mod;
         
         public:
             static KeybindManager* get();
 
             void loadDefaultKeybinds();
-            bool addKeybindAction(
-                KeybindAction     const& action,
-                KeybindList       const& defaults,
-                keybind_action_id const& insertAfter = nullptr
-            );
-            bool removeKeybindAction(keybind_action_id const& id);
 
             decltype(m_mKeybinds) getAllKeybinds();
             KeybindActionList getAllActions(keybind_category_id const& categoryFilter = nullptr);

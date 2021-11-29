@@ -1,3 +1,4 @@
+#include <Mod.hpp>
 #include <Loader.hpp>
 #include <Windows.h>
 #include <Internal.hpp>

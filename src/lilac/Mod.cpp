@@ -1,3 +1,4 @@
+#include <KeybindManager.hpp>
 #include <Hook.hpp>
 #include <Mod.hpp>
 #include <Log.hpp>
@@ -91,4 +92,18 @@ void Mod::throwError(
         severity,
         this
     ));
+}
+
+bool Mod::addKeybindAction(
+    KeybindAction     const& action,
+    KeybindList       const& defaults,
+    keybind_action_id const& insertAfter
+) {
+    return KeybindManager::get()->addKeybindAction(
+        this, action, defaults, insertAfter
+    );
+}
+
+bool Mod::removeKeybindAction(keybind_action_id const& id) {
+    return KeybindManager::get()->removeKeybindAction(this, id);
 }

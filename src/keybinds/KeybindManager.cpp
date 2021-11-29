@@ -19,6 +19,7 @@ KeybindManager* KeybindManager::get() {
 }
 
 bool KeybindManager::addKeybindAction(
+    Mod* owner,
     KeybindAction const& ogAction,
     KeybindList   const& defaults,
     keybind_action_id    const& insertAfter
@@ -30,6 +31,7 @@ bool KeybindManager::addKeybindAction(
         return false;
     }
     action->defaults = defaults;
+    action->owner    = owner;
     m_mActions.insert({ action->id, action });
     for (auto const& category : action->categories) {
         if (!this->m_mCategoryInfo.count(category)) {
@@ -51,10 +53,13 @@ bool KeybindManager::addKeybindAction(
 }
 
 bool KeybindManager::removeKeybindAction(
-    keybind_action_id const& actionID
+    Mod* mod, keybind_action_id const& actionID
 ) {
     if (this->m_mActions.count(actionID)) {
         auto action = this->m_mActions[actionID];
+        if (action->owner != mod) {
+            return false;
+        }
         this->clearKeybinds(actionID);
         for (auto const& category : action->categories) {
             this->m_mCategoryInfo[category]--;

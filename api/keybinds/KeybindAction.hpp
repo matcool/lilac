@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Keybind.hpp"
-#include "../lilac/Mod.hpp"
 
 namespace lilac {
+    class Mod;
+
     struct LILAC_DLL keybind_category_id {
         std::string m_value;
         keybind_category_id();
@@ -93,6 +94,15 @@ namespace lilac {
         virtual KeybindAction* copy() const;
     };
 
+    /**
+     * A keybind action that is a modifier, 
+     * i.e. doesn't do anything when pressed 
+     * but other parts of the code may check 
+     * if the modifier is pressed. Can be 
+     * bound to `modifiers`, or 
+     * `modifiers + key`, or `key`.
+     * @struct KeybindModifier
+     */
     struct LILAC_DLL KeybindModifier : public KeybindAction {
         KeybindModifier() = delete;
         KeybindModifier(
@@ -112,6 +122,14 @@ namespace lilac {
         virtual ~KeybindModifier();
     };
 
+    /**
+     * A keybind action that is a single 
+     * action ran when you press/release the 
+     * keybind. 
+     * May be bound to `modifiers + key` or 
+     * `key`.
+     * @struct TriggerableAction
+     */
     struct LILAC_DLL TriggerableAction : public KeybindAction {
         std::function<bool(cocos2d::CCNode*, bool)> action = nullptr;
         std::function<bool(cocos2d::CCNode*, keybind_category_id const&, bool)> actionWithID = nullptr;
@@ -171,11 +189,20 @@ namespace lilac {
         virtual KeybindAction* copy() const override;
     };
 
+    /**
+     * A keybind action that is a single 
+     * action ran when you press the keybind. 
+     * May be bound to `modifiers + key` or 
+     * `key`. If the keybind is held down, 
+     * the action will be repeated until 
+     * released.
+     * @struct RepeatableAction
+     */
     struct LILAC_DLL RepeatableAction : public TriggerableAction {
         bool repeatChanged  = false;
-        bool repeat         = true ;
-        int  repeatInterval = 100  ;
-        int  repeatStart    = 300  ;
+        bool repeat         = true;
+        int  repeatInterval = 100;
+        int  repeatStart    = 300;
 
         using TriggerableAction::TriggerableAction;
 

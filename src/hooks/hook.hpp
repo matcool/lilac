@@ -7,7 +7,7 @@ USE_LILAC_NAMESPACE();
 
 template<auto Func, auto Detour>
 struct CreateHook {
-    CreateHook() {
+    constexpr CreateHook() {
         auto res = InternalMod::get()->addHook(as<void*>(Func), as<void*>(Detour));
         if (!res) {
             InternalMod::get()->throwError(res.error(), Severity::Critical);
@@ -17,13 +17,16 @@ struct CreateHook {
 
 template<auto Detour>
 struct CreateHookAddr {
-    CreateHookAddr(uintptr_t addr) {
-        auto res = InternalMod::get()->addHook(as<void*>(addr), as<void*>(Detour));
+    constexpr CreateHookAddr(void* addr) {
+        auto res = InternalMod::get()->addHook(addr, as<void*>(Detour));
         if (!res) {
             InternalMod::get()->throwError(res.error(), Severity::Critical);
         } else {
             InternalMod::get()->log() << "Succesfully hooked " << addr << lilac::endl;
         }
+    }
+    constexpr CreateHookAddr(uintptr_t addr) {
+        auto _ = CreateHookAddr<Detour>(as<void*>(addr));
     }
 };
 
@@ -31,7 +34,7 @@ template<auto Detour>
 struct CreateHookMod {
     static inline std::unordered_map<std::string, HMODULE> m_mods = {};
 
-    CreateHookMod(const char* module, const char* symbol) {
+    constexpr CreateHookMod(const char* module, const char* symbol) {
         HMODULE mod;
         if (m_mods.count(module)) {
             mod = m_mods[module];

@@ -125,7 +125,7 @@ void LogStream::finish() {
     this->m_stream.str(std::string());
 }
 
-LogStream& LogStream::operator<<(::Mod* Mod) {
+LogStream& LogStream::operator<<(Mod* Mod) {
     this->save();
     if (!this->m_log) {
         this->m_log = new LogMessage(Mod);
@@ -147,6 +147,12 @@ LogStream& LogStream::operator<<(cocos2d::CCObject* obj) {
 LogStream& LogStream::operator<<(Severity severity) {
     this->init();
     this->m_log->m_severity = severity;
+    return *this;
+}
+
+LogStream& LogStream::operator<<(void* p) {
+    this->init();
+    *this << as<uintptr_t>(p);
     return *this;
 }
 
@@ -211,8 +217,7 @@ LogStream& LogStream::operator<<(cocos2d::CCSize const& size) {
 }
 
 LogStream& LogStream::operator<<(cocos2d::CCRect const& rect) {
-    this->init();
-    this->m_stream << rect.origin << " | " << rect.size;
+    *this << rect.origin << " | " << rect.size;
     return *this;
 }
 
