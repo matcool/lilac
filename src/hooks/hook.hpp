@@ -2,8 +2,26 @@
 
 #include <lilac.hpp>
 #include "InternalMod.hpp"
+#include "address.hpp"
 
 USE_LILAC_NAMESPACE();
+
+// todo: Finish meta so this can be removed
+
+#ifdef LILAC_IS_WIN32
+    #define LILAC_FASTCALL __fastcall
+    #define LILAC_THISCALL __thiscall
+    #define LILAC_STDCALL  __stdcall
+    #define EDX() edx_t,
+#else
+    #define LILAC_FASTCALL
+    #define LILAC_THISCALL
+    #define LILAC_STDCALL
+    #define EDX()
+#endif
+
+#define CREATE_HOOK(_class_, _func_) \
+    static CreateHookAddr<&_class_##_##_func_>$##_class_##_##_func_(addressOf<&_class_##::##_func_>());
 
 template<auto Func, auto Detour>
 struct CreateHook {

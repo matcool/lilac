@@ -17,7 +17,7 @@ add_subdirectory(submodules/lib)
 
 target_link_libraries(
   lilac_loader
-  lilac_hook
+  lilac_core_hook
   lilac_lib
 )
 
@@ -30,7 +30,7 @@ include_directories(
   "${CMAKE_SOURCE_DIR}/src"
   "${CMAKE_SOURCE_DIR}/src/lilac"
   "${CMAKE_SOURCE_DIR}/src/lilac/internal"
-  "${CMAKE_SOURCE_DIR}/submodules/core/include"
+  "${CMAKE_SOURCE_DIR}/submodules/core/include/lilac"
 )
 
 add_compile_definitions(_EXPORTING)

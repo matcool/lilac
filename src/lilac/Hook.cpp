@@ -4,7 +4,7 @@
 #include <Loader.hpp>
 #include <utils/other/casts.hpp>
 #include <utils/other/vector.hpp>
-#include <lilac_hook.hpp>
+#include <core/hook/hook.hpp>
 #include "Internal.hpp"
 
 USE_LILAC_NAMESPACE();
@@ -22,7 +22,7 @@ Result<Hook*> ModBase::addHookBase(void* addr, void* detour, Hook* hook) {
         hook = new Hook();
         hook->m_address = addr;
     }
-    if ((hook->m_handle = const_cast<void*>(lilac::Hooks::add(addr, detour)))) {
+    if ((hook->m_handle = const_cast<void*>(lilac::core::hook::add(addr, detour)))) {
         this->m_hooks.push_back(hook);
         hook->m_enabled = true;
         return Ok<Hook*>(hook);
@@ -45,7 +45,7 @@ Result<Hook*> ModBase::addHookBase(Hook* hook) {
 Result<> Mod::enableHook(Hook* hook) {
     if (!hook->isEnabled()) {
         if (!hook->m_handle) {
-            if ((hook->m_handle = const_cast<void*>(lilac::Hooks::add(hook->m_address, hook->m_detour)))) {
+            if ((hook->m_handle = const_cast<void*>(lilac::core::hook::add(hook->m_address, hook->m_detour)))) {
                 hook->m_enabled = true;
                 return Ok<>();
             }
@@ -59,7 +59,7 @@ Result<> Mod::enableHook(Hook* hook) {
 Result<> Mod::disableHook(Hook* hook) {
     if (hook->isEnabled()) {
         if (hook->m_handle) {
-            if (lilac::Hooks::remove(hook->m_handle)) {
+            if (lilac::core::hook::remove(hook->m_handle)) {
                 hook->m_enabled = false;
                 hook->m_handle = nullptr;
                 return Ok<>();
