@@ -12,10 +12,9 @@ if [ $1 == "pull" ]; then
 
     cd submodules/core
     git pull origin main
-    cd ../..
 
-    cd submodules/meta
-    git pull origin master
+    cd utils
+    git pull origin main
 
 else
 
@@ -49,10 +48,10 @@ else
     git push origin main
 
     echo ""
-    echo "==== lilac/meta ===="
+    echo "==== lilac/utils ===="
     echo ""
 
-    cd ../meta
+    cd utils
 
     git add --all
     git commit -a
