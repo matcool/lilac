@@ -55,6 +55,6 @@ else
 
     git add --all
     git commit -a
-    git push origin master
+    git push origin main
 
 fi
