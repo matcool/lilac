@@ -7,7 +7,7 @@ USE_LILAC_NAMESPACE();
 template<auto Func>
 static uintptr_t addressOf();
 
-#ifdef LILAC_IS_WIN32
+#ifdef LILAC_IS_WINDOWS
 
 template<>
 static uintptr_t addressOf<&EditorUI::keyDown>() {

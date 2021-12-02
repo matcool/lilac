@@ -61,7 +61,7 @@ bool Lilac::setup() {
     return true;
 }
 
-#ifdef LILAC_IS_WIN32
+#ifdef LILAC_IS_WINDOWS
 
 void Lilac::queueConsoleMessage(LogMessage* msg) {
     this->m_logQueue.push_back(msg);

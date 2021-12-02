@@ -4,7 +4,7 @@
 #include <Mod.hpp>
 #include <CApiMod.hpp>
 
-#ifdef LILAC_IS_WIN32
+#ifdef LILAC_IS_WINDOWS
 
 #include <Windows.h>
 #include <Win32.hpp>

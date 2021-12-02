@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../lilac/Macros.hpp"
+#include "../lilac/Macros.hpp"
 
-#ifdef LILAC_IS_WIN32
+#ifdef LILAC_IS_WINDOWS
 
 #include <Windows.h>
 

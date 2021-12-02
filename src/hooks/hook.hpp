@@ -8,7 +8,7 @@ USE_LILAC_NAMESPACE();
 
 // todo: Finish meta so this can be removed
 
-#ifdef LILAC_IS_WIN32
+#ifdef LILAC_IS_WINDOWS
     #define LILAC_FASTCALL __fastcall
     #define LILAC_THISCALL __thiscall
     #define LILAC_STDCALL  __stdcall

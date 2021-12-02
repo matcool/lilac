@@ -1,8 +1,7 @@
 #include "mod2.hpp"
 
-bool (__fastcall *GJGarageLayer_init_o)(CCLayer*);
-bool __fastcall GJGarageLayer_init(CCLayer* self) {
-    if (!GJGarageLayer_init_o(self))
+bool __fastcall GJGarageLayer_init(GJGarageLayer* self) {
+    if (!self->init())
         return false;
     
     if (Loader::get()->isModLoaded("com.lilac.test_one")) {
@@ -30,8 +29,7 @@ void TestMod2::setup() {
 
     this->addHook(
         gd_base + 0x1255d0,
-        &GJGarageLayer_init,
-        as<void**>(&GJGarageLayer_init_o)
+        &GJGarageLayer_init
     );
 }
 

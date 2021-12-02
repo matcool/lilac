@@ -7,11 +7,12 @@ file(GLOB_RECURSE SOURCES
   src/*.cpp
 )
 
+add_compile_definitions(LILAC_EXPORTING)
+
 add_library(lilac_loader SHARED ${SOURCES})
 
 set_target_properties(lilac_loader PROPERTIES PREFIX "" OUTPUT_NAME "lilac")
 
-add_subdirectory(submodules/meta)
 add_subdirectory(submodules/core)
 add_subdirectory(submodules/lib)
 
@@ -19,10 +20,12 @@ target_link_libraries(
   lilac_loader
   lilac_core_hook
   lilac_lib
+  lilac_utils
 )
 
 include_directories(
   lilac_lib
+  lilac_utils
   "${CMAKE_SOURCE_DIR}/api"
   "${CMAKE_SOURCE_DIR}/api/lilac"
   "${CMAKE_SOURCE_DIR}/api/utils"

@@ -2,7 +2,7 @@
 
 #include <lilac.hpp>
 
-#ifdef LILAC_IS_WIN32
+#ifdef LILAC_IS_WINDOWS
 
 USE_LILAC_NAMESPACE();
 

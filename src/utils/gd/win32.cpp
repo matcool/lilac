@@ -1,7 +1,7 @@
 #include <utils/gd/include_gd.hpp>
-#include <utils/other/platform.hpp>
+#include <utils/platform.hpp>
 
-#ifdef LILAC_IS_WIN32
+#ifdef LILAC_IS_WINDOWS
 
 USE_LILAC_NAMESPACE();
 
