@@ -2,7 +2,7 @@
 #include <Log.hpp>
 #include <Mod.hpp>
 #include <Loader.hpp>
-#include <utils/other/general.hpp>
+#include <utils/general.hpp>
 #include <utils/gd/stream.hpp>
 #include <Internal.hpp>
 

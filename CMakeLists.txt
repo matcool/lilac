@@ -24,8 +24,6 @@ target_link_libraries(
 )
 
 include_directories(
-  lilac_lib
-  lilac_utils
   "${CMAKE_SOURCE_DIR}/api"
   "${CMAKE_SOURCE_DIR}/api/lilac"
   "${CMAKE_SOURCE_DIR}/api/utils"

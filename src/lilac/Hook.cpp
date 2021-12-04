@@ -2,8 +2,8 @@
 #include <vector>
 #include <Mod.hpp>
 #include <Loader.hpp>
-#include <utils/other/casts.hpp>
-#include <utils/other/vector.hpp>
+#include <utils/casts.hpp>
+#include <utils/vector.hpp>
 #include <core/hook/hook.hpp>
 #include "Internal.hpp"
 

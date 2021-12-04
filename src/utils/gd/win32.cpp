@@ -1,5 +1,6 @@
 #include <utils/gd/include_gd.hpp>
 #include <utils/platform.hpp>
+#include <utils/gd/win32.hpp>
 
 #ifdef LILAC_IS_WINDOWS
 

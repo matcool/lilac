@@ -38,20 +38,20 @@ else
     git push origin main
 
     echo ""
-    echo "==== lilac/core ===="
+    echo "==== lilac/utils ===="
     echo ""
 
-    cd ../core
+    cd ../core/utils
 
     git add --all
     git commit -a
     git push origin main
 
     echo ""
-    echo "==== lilac/utils ===="
+    echo "==== lilac/core ===="
     echo ""
 
-    cd utils
+    cd ..
 
     git add --all
     git commit -a
