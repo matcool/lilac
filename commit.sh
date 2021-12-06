@@ -20,8 +20,6 @@ else
     echo "==== lilac/core ===="
     echo ""
 
-    cd ..
-
     git add --all
     git commit -a
     git push origin main
