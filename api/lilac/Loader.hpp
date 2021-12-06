@@ -1,7 +1,7 @@
 #pragma once
 
 #include "macros.hpp"
-#include "Types.hpp"
+#include "types.hpp"
 #include <string_view>
 #include <vector>
 #include <string>

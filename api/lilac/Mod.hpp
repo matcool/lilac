@@ -4,8 +4,8 @@
 #include "../keybinds/KeybindAction.hpp"
 #include "macros.hpp"
 #include "Types.hpp"
-#include "Result.hpp"
-#include "VersionInfo.hpp"
+#include <utils/Result.hpp>
+#include <utils/VersionInfo.hpp>
 #include <string_view>
 #include <vector>
 #include <unordered_map>

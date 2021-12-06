@@ -12,7 +12,7 @@
 #include "lilac/Log.hpp"
 #include "lilac/Mod.hpp"
 #include "lilac/Loader.hpp"
-#include "lilac/Win32.hpp"
+#include "lilac/windows.hpp"
 
 // restore dll-interface warnings for other mods
 

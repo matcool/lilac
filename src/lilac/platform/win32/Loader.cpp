@@ -7,7 +7,7 @@
 #ifdef LILAC_IS_WINDOWS
 
 #include <Windows.h>
-#include <Win32.hpp>
+#include <lilac/windows.hpp>
 
 USE_LILAC_NAMESPACE();
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <lilac_utils.hpp>
+#include <utils/include.hpp>
 
 #define LILAC_C_API \
     extern "C" __declspec(dllexport)
