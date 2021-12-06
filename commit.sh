@@ -12,20 +12,9 @@ if [ $1 == "pull" ]; then
     cd submodules/core
     git pull origin main
 
-    cd utils
-    git pull origin main
-
 else
 
-    cd submodules/lib/submodules/core/utils
-
-    echo ""
-    echo "==== lilac/utils ===="
-    echo ""
-
-    git add --all
-    git commit -a
-    git push origin main
+    cd submodules/lib/submodules/core
 
     echo ""
     echo "==== lilac/core ===="

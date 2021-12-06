@@ -19,7 +19,6 @@ target_link_libraries(
 	lilac_loader
 	lilac_core_hook
 	lilac_lib
-	lilac_utils
 )
 
 include_directories(

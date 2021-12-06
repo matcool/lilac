@@ -8,7 +8,6 @@
 #include "keybinds/KeybindManager.hpp"
 
 #include "lilac/macros.hpp"
-#include "lilac/Result.hpp"
 #include "lilac/Hook.hpp"
 #include "lilac/Log.hpp"
 #include "lilac/Mod.hpp"
