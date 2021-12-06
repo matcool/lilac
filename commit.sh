@@ -8,7 +8,6 @@ if [ $1 == "pull" ]; then
 
     cd submodules/lib
     git pull origin main
-    cd ../..
 
     cd submodules/core
     git pull origin main
@@ -18,30 +17,11 @@ if [ $1 == "pull" ]; then
 
 else
 
-    echo "==== lilac/loader ===="
-    echo ""
-
-    git add --all
-    git commit -a
-    git push origin main
-
-    cd submodules
-
-    echo ""
-    echo "==== lilac/lib ===="
-    echo ""
-
-    cd lib
-
-    git add --all
-    git commit -a
-    git push origin main
+    cd submodules/lib/submodules/core/utils
 
     echo ""
     echo "==== lilac/utils ===="
     echo ""
-
-    cd ../core/utils
 
     git add --all
     git commit -a
@@ -52,6 +32,25 @@ else
     echo ""
 
     cd ..
+
+    git add --all
+    git commit -a
+    git push origin main
+
+    echo ""
+    echo "==== lilac/lib ===="
+    echo ""
+
+    cd ../..
+
+    git add --all
+    git commit -a
+    git push origin main
+
+    echo "==== lilac/loader ===="
+    echo ""
+
+    cd ../..
 
     git add --all
     git commit -a

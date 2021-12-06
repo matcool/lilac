@@ -1,6 +1,3 @@
-[submodule "submodules/core"]
-	path = submodules/core
-	url = https://github.com/lilac-sdk/core
 [submodule "submodules/lib"]
 	path = submodules/lib
 	url = https://github.com/lilac-sdk/lib
