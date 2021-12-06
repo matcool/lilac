@@ -10,7 +10,7 @@ KeybindAction* KeybindAction::copy() const {
     return new KeybindAction(*this);
 }
 bool KeybindAction::inCategory(keybind_category_id const& category) const {
-    return this->categories.count(category);
+    return vector_utils::contains(this->categories, category);
 }
 
 KeybindModifier::~KeybindModifier() {}
@@ -106,7 +106,7 @@ TriggerableAction::TriggerableAction(
 TriggerableAction::TriggerableAction(
     std::string         const& name,
     keybind_action_id   const& id,
-    std::unordered_set<keybind_category_id> const& categories,
+    std::vector<keybind_category_id> const& categories,
     decltype(actionWithID)     action,
     std::string         const& description
 ) {
@@ -178,7 +178,12 @@ const char* keybind_category_id::c_str() const {
 }
 
 keybind_category_id::operator int() const {
+    if (!m_value.size()) return 0;
     return hash(m_value.c_str());
+}
+
+size_t keybind_category_id::size() const {
+    return m_value.size();
 }
 
 keybind_category_id::operator std::string() const {

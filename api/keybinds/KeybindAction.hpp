@@ -12,6 +12,7 @@ namespace lilac {
         keybind_category_id(const char*);
         ~keybind_category_id();
         const char* c_str() const;
+        size_t size() const;
         bool operator==(keybind_category_id const&) const;
         operator int() const;
         operator std::string() const;
@@ -68,7 +69,7 @@ namespace lilac {
          * KB_EDITOR_CATEGORY and 
          * KB_GLOBAL_CATEGORY.
          */
-        std::unordered_set<keybind_category_id> categories;
+        std::vector<keybind_category_id> categories;
         /**
          * Human-readable name of the action.
          */
@@ -165,7 +166,7 @@ namespace lilac {
         TriggerableAction(
             std::string         const& name,
             keybind_action_id   const& id,
-            std::unordered_set<keybind_category_id> const& categories,
+            std::vector<keybind_category_id> const& categories,
             decltype(actionWithID)     action,
             std::string         const& description
         );

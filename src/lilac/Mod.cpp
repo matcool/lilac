@@ -22,11 +22,20 @@ void Mod::disable() {}
 
 void Mod::disableBase() {
     this->m_enabled = false;
+    for (auto const& hook : this->m_hooks) {
+        this->disableHook(hook);
+    }
     this->disable();
 }
 
 void Mod::enableBase() {
     this->m_enabled = true;
+    // note: this will enable hooks that were 
+    // disabled prior to disabling the mod. 
+    // not good!!!
+    for (auto const& hook : this->m_hooks) {
+        this->enableHook(hook);
+    }
     this->enable();
 }
 

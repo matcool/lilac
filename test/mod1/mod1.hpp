@@ -5,7 +5,7 @@
 
 USE_LILAC_NAMESPACE();
 
-class MOD_API TestMod1 : public Mod {
+class MOD_DLL TestMod1 : public Mod {
     protected:
         void setup() override;
     

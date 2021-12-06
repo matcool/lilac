@@ -48,8 +48,10 @@ namespace lilac {
         keybind_action_id(const char*);
         ~keybind_action_id();
         const char* c_str() const;
+        size_t size() const;
         bool operator==(keybind_action_id const&) const;
         operator int()  const;
+        operator std::string() const;
         keybind_action_id operator=(std::string const&);
         keybind_action_id operator=(std::nullptr_t const&);
     };

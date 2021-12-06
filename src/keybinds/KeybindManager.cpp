@@ -22,24 +22,37 @@ bool KeybindManager::addKeybindAction(
     Mod* owner,
     KeybindAction const& ogAction,
     KeybindList   const& defaults,
-    keybind_action_id    const& insertAfter
+    keybind_action_id const& insertAfter
 ) {
     auto action = ogAction.copy();
     if (!action) return false;
-    if (this->m_mActions.count(action->id)) {
+    if (this->m_mActions.count(action->id) || !action->categories.size()) {
         delete action;
         return false;
     }
+
     action->defaults = defaults;
     action->owner    = owner;
     m_mActions.insert({ action->id, action });
+
     for (auto const& category : action->categories) {
         if (!this->m_mCategoryInfo.count(category)) {
-            this->m_mCategoryInfo.insert({ category, 1 });
+            this->m_mCategoryInfo.insert({ category, { 1 } });
         } else {
-            this->m_mCategoryInfo[category]++;
+            this->m_mCategoryInfo[category].actionCount++;
         }
     }
+
+    if (insertAfter.size()) {
+        vector_utils::insertAfter(
+            this->m_mCategoryInfo[action->categories[0]].actionOrder,
+            insertAfter,
+            action->id
+        );
+    } else {
+        this->m_mCategoryInfo[action->categories[0]].actionOrder.push_back(action->id);
+    }
+
     if (this->m_mLoadedBinds.count(action->id)) {
         for (auto const& bind : this->m_mLoadedBinds[action->id]) {
             this->addKeybind(action->id, bind);
@@ -49,6 +62,7 @@ bool KeybindManager::addKeybindAction(
             this->addKeybind(action->id, bind);
         }
     }
+
     return true;
 }
 
@@ -60,14 +74,20 @@ bool KeybindManager::removeKeybindAction(
         if (action->owner != mod) {
             return false;
         }
+
         this->clearKeybinds(actionID);
+        this->m_mActions.erase(actionID);
+
         for (auto const& category : action->categories) {
-            this->m_mCategoryInfo[category]--;
-            if (this->m_mCategoryInfo[category] <= 0) {
+            this->m_mCategoryInfo[category].actionCount--;
+            if (
+                this->m_mCategoryInfo[category].actionCount <= 0 &&
+                !this->m_mCategoryInfo[category].name.size()
+            ) {
                 this->m_mCategoryInfo.erase(category);
             }
-            this->m_mActions.erase(actionID);
         }
+        
         delete action;
         return true;
     }
@@ -251,18 +271,13 @@ std::vector<keybind_category_id> KeybindManager::getAllCategories() const {
     return map_utils::getKeys(this->m_mCategoryInfo);
 }
 
-int KeybindManager::getActionCountInCategory(keybind_category_id const& id) {
-    return this->m_mCategoryInfo[id];
+size_t KeybindManager::getActionCountInCategory(keybind_category_id const& id) {
+    return this->m_mCategoryInfo[id].actionCount;
 }
 
-KeybindActionList KeybindManager::getAllActionsInCategory(keybind_category_id const& id) const {
-    KeybindActionList res;
-    for (auto const& [_, action] : this->m_mActions) {
-        if (action->inCategory(id)) {
-            res.push_back(action);
-        }
-    }
-    return res;
+std::vector<keybind_action_id> KeybindManager::getAllActionsInCategory(keybind_category_id const& id) const {
+    if (!this->m_mCategoryInfo.count(id)) return {};
+    return this->m_mCategoryInfo.at(id).actionOrder;
 }
 
 bool KeybindManager::invokeAction(keybind_action_id const& id, CCNode* context, bool down) {
@@ -361,17 +376,17 @@ RepeatableAction* KeybindManager::isRepeatableAction(keybind_action_id const& id
     return dynamic_cast<RepeatableAction*>(this->m_mActions[id]);
 }
 
-void KeybindManager::addCategory(keybind_category_id const& id, std::string const& name) {
-    this->m_mCategoryNames.insert({ id, name });
-}
-
-void KeybindManager::removeCategory(keybind_category_id const& id) {
-    this->m_mCategoryNames.erase(id);
+void KeybindManager::setCategoryName(keybind_category_id const& id, std::string const& name) {
+    if (this->m_mCategoryInfo.count(id)) {
+        this->m_mCategoryInfo[id].name = name;
+    } else {
+        this->m_mCategoryInfo.insert({ id, { 0, name }});
+    }
 }
 
 std::string KeybindManager::getCategoryName(keybind_category_id const& id) {
-    if (this->m_mCategoryNames.count(id)) {
-        return this->m_mCategoryNames[id];
+    if (this->m_mCategoryInfo.count(id)) {
+        return this->m_mCategoryInfo[id].name;
     }
     return id;
 }

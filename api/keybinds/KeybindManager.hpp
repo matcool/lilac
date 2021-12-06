@@ -20,12 +20,17 @@ namespace lilac {
                 keybind_category_id category;
             };
 
+            struct category_info {
+                size_t actionCount = 0;
+                std::string name = "";
+                std::vector<keybind_action_id> actionOrder;
+            };
+
             std::unordered_map<keybind_action_id, KeybindAction*> m_mActions;
-            std::unordered_map<Keybind,           std::vector<keybind_action_id>> m_mKeybinds;
+            std::unordered_map<Keybind, std::vector<keybind_action_id>> m_mKeybinds;
             std::unordered_map<keybind_action_id, KeybindList>  m_mLoadedBinds;
             std::unordered_map<keybind_action_id, repeat_info>  m_mRepeat;
-            std::unordered_map<keybind_category_id, int>        m_mCategoryInfo;
-            std::unordered_map<keybind_category_id, std::string>m_mCategoryNames;
+            std::unordered_map<keybind_category_id, category_info>m_mCategoryInfo;
             Keybind::ModifierFlags                              m_nPreviousModifiers = Keybind::kmNone;
             std::unordered_set<MouseButton>                     m_vPressedMice;
             std::unordered_set<cocos2d::enumKeyCodes>           m_vPressedKeys;
@@ -57,8 +62,8 @@ namespace lilac {
             KeybindList getKeybindsForAction(keybind_action_id const& action);
 
             std::vector<keybind_category_id> getAllCategories() const;
-            KeybindActionList getAllActionsInCategory(keybind_category_id const& id) const;
-            int getActionCountInCategory(keybind_category_id const& id);
+            std::vector<keybind_action_id> getAllActionsInCategory(keybind_category_id const& id) const;
+            size_t getActionCountInCategory(keybind_category_id const& id);
 
             void addKeybind(    keybind_action_id const& action, Keybind const& bind);
             void removeKeybind( keybind_action_id const& action, Keybind const& bind);
@@ -75,8 +80,7 @@ namespace lilac {
                     kfKeybindResetModifierSettings
             );
 
-            void addCategory(   keybind_category_id const& id, std::string const& name);
-            void removeCategory(keybind_category_id const& id);
+            void setCategoryName(keybind_category_id const& id, std::string const& name);
             std::string getCategoryName(keybind_category_id const& id);
     
             stop_propagation handleKeyEvent(

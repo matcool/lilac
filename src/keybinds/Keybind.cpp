@@ -186,7 +186,16 @@ keybind_action_id keybind_action_id::operator=(std::nullptr_t const&) {
 }
 
 keybind_action_id::operator int() const {
+    if (!m_value.size()) return 0;
     return hash(m_value.c_str());
+}
+
+size_t keybind_action_id::size() const {
+    return m_value.size();
+}
+
+keybind_action_id::operator std::string() const {
+    return m_value;
 }
 
 bool keybind_action_id::operator==(keybind_action_id const& other) const {

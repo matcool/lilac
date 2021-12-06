@@ -26,6 +26,10 @@ using namespace std::literals::string_literals;
 void KeybindManager::loadDefaultKeybinds() {
     auto owner = InternalMod::get();
 
+    this->setCategoryName(KB_PLAY_CATEGORY,   "Play");
+    this->setCategoryName(KB_EDITOR_CATEGORY, "Editor");
+    this->setCategoryName(KB_GLOBAL_CATEGORY, "Global");
+
     this->addKeybindAction(owner, TriggerableAction {
         "Pause",
         "gd.play.pause",
