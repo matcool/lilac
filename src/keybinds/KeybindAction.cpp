@@ -192,8 +192,8 @@ keybind_category_id keybind_category_id::operator=(std::string const& val) {
 
 bool keybind_category_id::operator==(keybind_category_id const& other) const {
     return
-        string_to_lower(m_value) ==
-        string_to_lower(other.m_value);
+        string_utils::toLower(m_value) ==
+        string_utils::toLower(other.m_value);
 }
 
 std::ostream& lilac::operator<<(std::ostream& stream, keybind_category_id const& id) {

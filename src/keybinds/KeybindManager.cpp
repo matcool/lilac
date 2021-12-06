@@ -90,7 +90,7 @@ void KeybindManager::removeKeybind(
     Keybind const& bind
 ) {
     if (this->m_mKeybinds.count(bind) && this->m_mKeybinds[bind].size()) {
-        vector_erase<keybind_action_id>(this->m_mKeybinds[bind], [id](keybind_action_id const& kid) -> bool {
+        vector_utils::erase<keybind_action_id>(this->m_mKeybinds[bind], [id](keybind_action_id const& kid) -> bool {
             return kid == id;
         });
     }
@@ -176,9 +176,9 @@ KeybindActionList KeybindManager::getAllActions(
     keybind_category_id const& categoryFilter
 ) {
     if (!categoryFilter) {
-        return map_values(this->m_mActions);
+        return map_utils::getValues(this->m_mActions);
     }
-    return map_select_all<keybind_action_id, KeybindAction*>(
+    return map_utils::selectAll<keybind_action_id, KeybindAction*>(
         this->m_mActions,
         [categoryFilter](KeybindAction* action) -> bool {
             return action->inCategory(categoryFilter);
@@ -248,7 +248,7 @@ bool KeybindManager::handleKeyEvent(
 }
 
 std::vector<keybind_category_id> KeybindManager::getAllCategories() const {
-    return map_keys(this->m_mCategoryInfo);
+    return map_utils::getKeys(this->m_mCategoryInfo);
 }
 
 int KeybindManager::getActionCountInCategory(keybind_category_id const& id) {

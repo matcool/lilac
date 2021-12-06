@@ -71,7 +71,7 @@ std::vector<Hook*> Mod::getHooks() const {
 }
 
 void Mod::setDependencies(std::unordered_map<std::string, DependencyType> const& dependencies) {
-    this->m_dependencies = map_remap<
+    this->m_dependencies = map_utils::remap<
         std::string, DependencyType,
         std::string, Dependency
     >(dependencies, [](std::pair<std::string, DependencyType> val) -> std::pair<std::string, Dependency> {

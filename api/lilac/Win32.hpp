@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Macros.hpp"
+#include "macros.hpp"
 
 #ifdef LILAC_IS_WINDOWS
 

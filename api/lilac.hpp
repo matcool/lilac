@@ -7,7 +7,7 @@
 #include "keybinds/KeybindAction.hpp"
 #include "keybinds/KeybindManager.hpp"
 
-#include "lilac/Macros.hpp"
+#include "lilac/macros.hpp"
 #include "lilac/Result.hpp"
 #include "lilac/Hook.hpp"
 #include "lilac/Log.hpp"

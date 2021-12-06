@@ -191,8 +191,8 @@ keybind_action_id::operator int() const {
 
 bool keybind_action_id::operator==(keybind_action_id const& other) const {
     return
-        string_to_lower(this->m_value) ==
-        string_to_lower(other.m_value);
+        string_utils::toLower(this->m_value) ==
+        string_utils::toLower(other.m_value);
 }
 
 std::size_t std::hash<Keybind>::operator()(Keybind const& key) const {

@@ -2,7 +2,7 @@
 
 #include "../keybinds/Keybind.hpp"
 #include "../keybinds/KeybindAction.hpp"
-#include "Macros.hpp"
+#include "macros.hpp"
 #include "Types.hpp"
 #include "Result.hpp"
 #include "VersionInfo.hpp"

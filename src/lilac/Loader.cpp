@@ -14,9 +14,9 @@ Loader* Loader::get() {
 }
 
 void Loader::createDirectories() {
-    directory_create(const_join_path_c_str<lilac_directory>);
-    directory_create(const_join_path_c_str<lilac_directory, lilac_resource_directory>);
-    directory_create(const_join_path_c_str<lilac_directory, lilac_mod_directory>);
+    file_utils::createDirectory(const_join_path_c_str<lilac_directory>);
+    file_utils::createDirectory(const_join_path_c_str<lilac_directory, lilac_resource_directory>);
+    file_utils::createDirectory(const_join_path_c_str<lilac_directory, lilac_mod_directory>);
 }
 
 bool Loader::checkDependencies(Mod* mod) {
@@ -57,7 +57,7 @@ size_t Loader::updateMods() {
                 << Severity::Debug
                 << "Loading " << entry.path().string()
                 << lilac::endl;
-            if (!vector_contains<Mod*>(
+            if (!vector_utils::contains<Mod*>(
                 this->m_mods,
                 [entry](Mod* p) -> bool {
                     return p->m_path == entry.path().string();
@@ -73,7 +73,7 @@ size_t Loader::updateMods() {
 }
 
 bool Loader::isModLoaded(std::string_view const& id) {
-    return vector_contains<Mod*>(
+    return vector_utils::contains<Mod*>(
         this->m_mods,
         [id](Mod* p) -> bool {
             return p->m_id == id;
@@ -82,7 +82,7 @@ bool Loader::isModLoaded(std::string_view const& id) {
 }
 
 Mod* Loader::getLoadedMod(std::string_view const& id) {
-    return vector_select<Mod*>(
+    return vector_utils::select<Mod*>(
         this->m_mods,
         [id](Mod* p) -> bool {
             return p->m_id == id;
@@ -95,7 +95,7 @@ std::vector<Mod*> Loader::getLoadedMods() {
 }
 
 void Loader::unloadMod(Mod* mod) {
-    vector_erase(this->m_mods, mod);
+    vector_utils::erase(this->m_mods, mod);
     // ~Mod will call FreeLibrary 
     // automatically
     delete mod;
@@ -141,7 +141,7 @@ void Loader::log(LogMessage* log) {
 }
 
 void Loader::deleteLog(LogMessage* log) {
-    vector_erase(this->m_logs, log);
+    vector_utils::erase(this->m_logs, log);
     delete log;
 }
 
@@ -159,7 +159,7 @@ std::vector<LogMessage*> Loader::getLogs(
     std::vector<LogMessage*> logs;
 
     for (auto const& log : this->m_logs) {
-        if (vector_contains<Severity>(severityFilter, log->getSeverity())) {
+        if (vector_utils::contains<Severity>(severityFilter, log->getSeverity())) {
             logs.push_back(log);
         }
     }

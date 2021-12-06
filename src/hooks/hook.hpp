@@ -5,6 +5,7 @@
 #include "address.hpp"
 
 USE_LILAC_NAMESPACE();
+using namespace std::literals::string_literals;
 
 // todo: Finish meta so this can be removed
 
@@ -62,14 +63,14 @@ struct CreateHookMod {
         }
         if (!mod) {
             InternalMod::get()->throwError(
-                "Unable to find module \""_s + module + "\"",
+                "Unable to find module \""s + module + "\"",
                 Severity::Critical
             );
         }
         auto addr = reinterpret_cast<uintptr_t>(GetProcAddress(mod, symbol));
         if (!addr) {
             InternalMod::get()->throwError(
-                "Unable to find symbol \""_s + symbol + "\" in module \""_s + module + "\"",
+                "Unable to find symbol \""s + symbol + "\" in module \""s + module + "\"",
                 Severity::Critical
             );
         }

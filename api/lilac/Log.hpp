@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Macros.hpp"
+#include "macros.hpp"
 #include "Types.hpp"
 #include <chrono>
 #include <sstream>

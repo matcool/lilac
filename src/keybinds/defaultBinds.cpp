@@ -2,6 +2,7 @@
 #include <InternalMod.hpp>
 
 USE_LILAC_NAMESPACE();
+using namespace std::literals::string_literals;
 
 #define CLICKED(...) if (down) { __VA_ARGS__ }
 #define UI(...) auto ui = as<EditorUI*>(context); __VA_ARGS__
@@ -41,7 +42,7 @@ void KeybindManager::loadDefaultKeybinds() {
             }
             return false;
         },
-        "Pause ingame / in the editor"_s
+        "Pause ingame / in the editor"s
     }, {{ KEY_Escape, 0 }});
 
     this->addKeybindAction(owner, TriggerableAction {
@@ -60,7 +61,7 @@ void KeybindManager::loadDefaultKeybinds() {
             }
             return false;
         },
-        "Player 1 Jump"_s
+        "Player 1 Jump"s
     }, {{ KEY_Space, 0 }});
 
     this->addKeybindAction(owner, TriggerableAction {
@@ -81,7 +82,7 @@ void KeybindManager::loadDefaultKeybinds() {
             }
             return false;
         },
-        "Player 2 Jump"_s
+        "Player 2 Jump"s
     }, {{ KEY_Up, 0 }});
 
     this->addKeybindAction(owner, RepeatableAction {
@@ -97,7 +98,7 @@ void KeybindManager::loadDefaultKeybinds() {
             }
             return false;
         },
-        "Place a Checkpoint in Practice Mode"_s
+        "Place a Checkpoint in Practice Mode"s
     }, {{ KEY_Z, 0 }});
 
     this->addKeybindAction(owner, RepeatableAction {
@@ -113,7 +114,7 @@ void KeybindManager::loadDefaultKeybinds() {
             }
             return false;
         },
-        "Delete the last Checkpoint in Practice Mode"_s
+        "Delete the last Checkpoint in Practice Mode"s
     }, {{ KEY_X, 0 }});
 
     ////////////////////////

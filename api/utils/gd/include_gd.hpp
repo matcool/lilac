@@ -8,7 +8,7 @@
 #pragma warning(disable: 4251)  // members
 #pragma warning(disable: 4067)  // shut up about unexpected tokens in cocos2d
 
-#include "../../lilac/Macros.hpp"
+#include "../../lilac/macros.hpp"
 
 #include <cocos2d.h>
 #include <gd.hpp>

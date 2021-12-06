@@ -57,7 +57,7 @@ CCPoint lilac::node::getMousePos() {
     auto winSizePx = CCDirector::sharedDirector()->getOpenGLView()->getViewPortRect();
     auto ratio_w = winSize.width / winSizePx.size.width;
     auto ratio_h = winSize.height / winSizePx.size.height;
-    auto mpos = CCDirector::sharedDirector()->getOpenGLView()->getMousePosition();
+    auto mpos = ccGetMousePosition();
     mpos.y = winSizePx.size.height - mpos.y;
     mpos.x *= ratio_w;
     mpos.y *= ratio_h;
