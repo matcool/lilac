@@ -30,12 +30,19 @@ namespace lilac {
             LogStream* m_logStream;
             bool m_isSetup = false;
 
+            enum class PlatformInfoCheckResult {
+                UnableToLoad,
+                WontLoad,
+                WillLoad,
+            };
+
             Loader();
             virtual ~Loader();
             
             bool loadModFromFile(std::string const& file);
             void createDirectories();
             bool checkDependencies(Mod* mod);
+            PlatformInfoCheckResult checkPlatformInfo(std::string const& file);
 
             friend class Mod;
             friend class CustomLoader;

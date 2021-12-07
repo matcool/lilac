@@ -1,20 +1,26 @@
 #include "mod1.hpp"
 
-void TestMod1::setup() {
-    this->m_id          = "com.lilac.test_one";
-    this->m_name        = "Lilac Test 1";
-    this->m_developer   = "Lilac Team";
-    this->m_description = "Test Mod #1";
-    this->m_details     = "Test Mod #1 for making sure hooking, "
-                          "loading and sharing interfaces works.";
-    this->m_credits     = "";
-    this->m_version     = { 1, 0, 0 };
+#pragma section(".lilac", read)
 
+__declspec(allocate(".lilac"))
+static const char* g_modinfo =
+R"JSON({
+	"version":      "v1.0.0",
+	"id":           "com.lilac.test_one",
+    "name":         "Lilac Test 1",
+    "developer":    "Lilac Team",
+    "description":  "Test Mod #1",
+    "details":      "Test Mod #1 for making sure hooking, loading and sharing interfaces works.",
+    "credits":      null,
+	"dependencies": null
+})JSON";
+
+void TestMod1::setup() {
     this->logMessage("Hi from TestMod1");
 }
 
 void TestMod1::logMessage(std::string_view const& msg) {
-    this->log() << "Logged by TestMod1: " << msg << "\n";
+    this->log() << "Logged by TestMod1: " << msg << lilac::endl;
 }
 
 TestMod1* TestMod1::get() {

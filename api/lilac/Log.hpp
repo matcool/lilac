@@ -158,6 +158,7 @@ namespace lilac {
             LogStream& operator<<(Mod*);
             LogStream& operator<<(void*);
             LogStream& operator<<(Severity);
+            LogStream& operator<<(Severity::type);
             LogStream& operator<<(cocos2d::CCObject*);
             LogStream& operator<<(std::string const&);
             LogStream& operator<<(std::string_view const&);

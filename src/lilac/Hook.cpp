@@ -98,6 +98,7 @@ Result<Hook*> Mod::addHook(void* addr, void* detour, void** trampoline) {
 }
 
 bool Lilac::loadHooks() {
+    g_readyToHook = true;
     auto thereWereErrors = false;
     for (auto const& hook : g_hooks) {
         auto res = hook.mod->addHookBase(hook.hook);
@@ -108,7 +109,7 @@ bool Lilac::loadHooks() {
             );
             thereWereErrors = true;
         }
+        g_hooks.clear();
     }
-    g_readyToHook = true;
     return thereWereErrors;
 }

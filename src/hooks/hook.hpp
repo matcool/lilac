@@ -7,20 +7,6 @@
 USE_LILAC_NAMESPACE();
 using namespace std::literals::string_literals;
 
-// todo: Finish meta so this can be removed
-
-#ifdef LILAC_IS_WINDOWS
-    #define LILAC_FASTCALL __fastcall
-    #define LILAC_THISCALL __thiscall
-    #define LILAC_STDCALL  __stdcall
-    #define EDX() edx_t,
-#else
-    #define LILAC_FASTCALL
-    #define LILAC_THISCALL
-    #define LILAC_STDCALL
-    #define EDX()
-#endif
-
 #define CREATE_HOOK(_class_, _func_) \
     static CreateHookAddr<&_class_##_##_func_>$##_class_##_##_func_(addressOf<&_class_##::##_func_>());
 

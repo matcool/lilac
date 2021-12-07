@@ -150,6 +150,12 @@ LogStream& LogStream::operator<<(Severity severity) {
     return *this;
 }
 
+LogStream& LogStream::operator<<(Severity::type severity) {
+    this->init();
+    this->m_log->m_severity = severity;
+    return *this;
+}
+
 LogStream& LogStream::operator<<(void* p) {
     this->init();
     *this << as<uintptr_t>(p);

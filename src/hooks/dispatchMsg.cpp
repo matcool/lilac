@@ -24,7 +24,6 @@ static CreateHookMod<&CCKeyboardDispatcher_dispatchKeyboardMSG>$cckddkmsg(
 
 void __fastcall CCScheduler_update(CCScheduler* self, edx_t, float dt) {
     KeybindManager::get()->handleRepeats(dt);
-
     return self->update(dt);
 }
 static CreateHookMod<&CCScheduler_update>$ccsu(

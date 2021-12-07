@@ -85,7 +85,7 @@ namespace lilac {
 		type m_value;
 
 		Severity(type t) { m_value = t; }
-		Severity& operator=(type t) { m_value = t; }
+		Severity& operator=(type t) { m_value = t; return *this; }
 		bool operator==(int other) const { return m_value == other; }
 		bool operator==(Severity const& other) const { return m_value == other.m_value; }
 		operator int() { return m_value; }

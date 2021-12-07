@@ -49,9 +49,10 @@ bool Lilac::setup() {
         KB_GLOBAL_CATEGORY,
         [](auto node, bool down) -> bool {
             if (down) {
+                auto count = Loader::get()->updateMods();
                 FLAlertLayer::create(
                     nullptr, "yea", "OK", nullptr,
-                    "woo wee"
+                    "woo wee " + std::to_string(count)
                 )->show();
             }
             return false;
@@ -83,14 +84,15 @@ void Lilac::setupPlatformConsole() {
     freopen_s(reinterpret_cast<FILE**>(stdin), "CONIN$", "r", stdin);
 
     m_platformConsoleReady = true;
-
-    for (auto const& log : this->m_logQueue) {
-        std::cout << log->toString(true) << "\n";
-    }
 }
 
 void Lilac::awaitPlatformConsole() {
     if (!m_platformConsoleReady) return;
+
+    for (auto const& log : this->m_logQueue) {
+        std::cout << log->toString(true) << "\n";
+        this->m_logQueue.clear();
+    }
 
     std::string inp;
     getline(std::cin, inp);
@@ -101,7 +103,11 @@ void Lilac::awaitPlatformConsole() {
     while (ss >> inpa) args.push_back(inpa);
     ss.clear();
 
-    CLIManager::get()->execute(args);
+    // CLIManager::get()->execute(args);
+
+    if (inp == "reload") {
+        Loader::get()->updateMods();
+    }
 
     if (inp != "e") this->awaitPlatformConsole();
 }
