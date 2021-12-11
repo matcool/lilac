@@ -1,0 +1,16 @@
+{
+	"version":      "v1.0.0",
+	"id":           "com.lilac.test_two",
+    "name":         "Lilac Test 2",
+    "developer":    "Lilac Team",
+    "description":  "Test Mod #2",
+    "details":      "Test Mod #2 for making sure using shared interfaces works.",
+    "credits":      null,
+	"dependencies": [
+        {
+            "id": "com.lilac.test_one",
+            "version": "v1.0.0",
+            "required": true
+        }
+    ]
+}

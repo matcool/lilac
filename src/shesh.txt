@@ -6,7 +6,10 @@ ${workspaceFolder}/api
 ${workspaceFolder}/api/keybinds
 ${workspaceFolder}/api/lilac
 ${workspaceFolder}/api/utils
-${workspaceFolder}/submodules/core/include
+${workspaceFolder}/submodules/lib/submodules/core/include/lilac
+${workspaceFolder}/submodules/lib/submodules/core/include/lilac/core
+${workspaceFolder}/submodules/lib/submodules/core/include/lilac/core/macros
+${workspaceFolder}/submodules/lib/include/utils
 ${workspaceFolder}/submodules/lib/include/gd
 ${workspaceFolder}/submodules/lib/include/gd/include
 ${workspaceFolder}/submodules/lib/include/cocos2dx
@@ -24,3 +27,4 @@ ${workspaceFolder}/submodules/lib/include/cocos2dx/platform/third_party/win32/ic
 ${workspaceFolder}/submodules/lib/include/cocos2dx/platform/win32
 ${workspaceFolder}/submodules/lib/include/fmod/inc
 ${workspaceFolder}/submodules/lib/include/extensions
+${workspaceFolder}/submodules/lib/include
