@@ -19,25 +19,6 @@ void Loader::createDirectories() {
     file_utils::createDirectory(const_join_path_c_str<lilac_directory, lilac_mod_directory>);
 }
 
-bool Loader::checkDependencies(Mod* mod) {
-    if (!mod->m_dependencies.size()) {
-        return true;
-    }
-
-    size_t unresolved_count = 0;
-    for (auto & [dep_id, value] : mod->m_dependencies) {
-        auto& [type, resolved] = value;
-        resolved = this->isModLoaded(dep_id.c_str());
-        if (!resolved) {
-            if (type != DependencyType::Optional) {
-                unresolved_count++;
-            }
-        }
-    }
-
-    return unresolved_count;
-}
-
 size_t Loader::updateMods() {
     InternalMod::get()->log()
         << Severity::Debug
@@ -63,8 +44,11 @@ size_t Loader::updateMods() {
                     return p->m_path == entry.path().string();
                 }
             )) {
-                if (this->loadModFromFile(entry.path().string())) {
+                auto res = this->loadModFromFile(entry.path().string());
+                if (res) {
                     loaded++;
+                } else {
+                    InternalMod::get()->throwError(res.error(), Severity::Error);
                 }
             }
         }

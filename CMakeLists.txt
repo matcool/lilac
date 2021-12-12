@@ -14,6 +14,8 @@ add_library(lilac_loader SHARED ${SOURCES})
 set_target_properties(lilac_loader PROPERTIES PREFIX "" OUTPUT_NAME "lilac")
 
 add_subdirectory(submodules/lib)
+set(BUILD_TEST Off CACHE BOOL "Build the test program." FORCE)
+add_subdirectory(submodules/zipper)
 
 target_link_libraries(
 	lilac_loader
@@ -21,7 +23,14 @@ target_link_libraries(
 	lilac_lib
 )
 
-include_directories(
+if(DEBUG)
+	target_link_libraries(lilac_loader staticZipperd)
+else()
+	target_link_libraries(lilac_loader staticZipper)
+endif()
+
+target_include_directories(
+	lilac_loader PUBLIC
 	"${CMAKE_SOURCE_DIR}/api"
 	"${CMAKE_SOURCE_DIR}/api/lilac"
 	"${CMAKE_SOURCE_DIR}/api/utils"
@@ -29,6 +38,8 @@ include_directories(
 	"${CMAKE_SOURCE_DIR}/src"
 	"${CMAKE_SOURCE_DIR}/src/lilac"
 	"${CMAKE_SOURCE_DIR}/src/lilac/internal"
+	"${CMAKE_SOURCE_DIR}/submodules/zipper/zipper"
+	"${CMAKE_SOURCE_DIR}/submodules/json"
 )
 
 add_compile_definitions(_EXPORTING)
