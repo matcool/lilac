@@ -30,11 +30,13 @@ namespace lilac {
             LogStream* m_logStream;
             bool m_isSetup = false;
 
+            static constexpr const int s_supportedSchemaMax = 1;
+
             Loader();
             virtual ~Loader();
             
             Result<> loadModFromFile(std::string const& file);
-            Result<bool> checkDependencies(std::string const& file);
+            Result<bool> checkMetaInformation(std::string const& file);
             void createDirectories();
 
             friend class Mod;

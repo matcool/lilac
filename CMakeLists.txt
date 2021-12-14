@@ -47,4 +47,24 @@ add_compile_definitions(LILAC_PLATFORM_CONSOLE)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 
+function(create_lilac_file proname)
+	add_custom_command(
+		TARGET ${proname} POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+			"${CMAKE_CURRENT_SOURCE_DIR}/mod.json"
+			"${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/mod.json"
+			"${srcs}"
+	)
+	add_custom_command(
+		TARGET ${proname}
+		COMMAND ${CMAKE_COMMAND} -E tar "cf" 
+			"${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/${proname}.lilac" --format=zip -- 
+			"${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/mod.json"
+			"${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/${proname}.dll"
+			"${srcs}"
+		WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>"
+		COMMAND ${CMAKE_COMMAND} -E echo "Creating zip file -> ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/${proname}.lilac"
+	)
+endfunction()
+
 add_subdirectory(test)

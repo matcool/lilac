@@ -10,10 +10,6 @@
 
 #include <Windows.h>
 #include <lilac/windows.hpp>
-#include <unzipper.h>
-#include <json.hpp>
-
-using namespace zipper;
 
 USE_LILAC_NAMESPACE();
 
@@ -51,27 +47,8 @@ Mod* loadWithCApi(HMODULE load) {
     return nullptr;
 }
 
-Result<bool> Loader::checkDependencies(std::string const& path) {
-    auto unzip = Unzipper(path);
-    lilac::byte_array bytes {};
-    if (!unzip.extractEntryToMemory("mod.json", bytes)) {
-        return Err<>(
-            "\"" + path + "\" is missing mod.json "
-            "(or is not a zip file at all)"
-        );
-    }
-    auto json = nlohmann::json(bytes);
-    if (!json.is_object()) {
-        return Err<>(
-            "\"" + path + "/mod.json\" does not have an "
-            "object at root despite expected"
-        );
-    }
-    return Ok<>(true);
-}
-
 Result<> Loader::loadModFromFile(std::string const& path) {
-    auto check = this->checkDependencies(path);
+    auto check = this->checkMetaInformation(path);
     if (!check) {
         return check;
     }
