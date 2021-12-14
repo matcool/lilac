@@ -36,7 +36,7 @@ namespace lilac {
             virtual ~Loader();
             
             Result<> loadModFromFile(std::string const& file);
-            Result<bool> checkMetaInformation(std::string const& file);
+            Result<Mod*> checkMetaInformation(std::string const& file);
             void createDirectories();
 
             friend class Mod;

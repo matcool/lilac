@@ -23,10 +23,10 @@ namespace lilac {
     class Loader;
     class LogStream;
 
-    enum class DependencyType {
-        Optional,
-        Required,
-        CustomLoader,
+    struct Dependency {
+        std::string_view m_name;
+        bool m_required;
+        Mod* m_loaded = nullptr;
     };
 
     /**
@@ -41,8 +41,6 @@ namespace lilac {
      */
     class LILAC_DLL ModBase {
         protected:
-            using Dependency = std::tuple<DependencyType, bool>;
-
             /**
              * Path of the loaded file on a
              * given platform
@@ -57,13 +55,17 @@ namespace lilac {
              */
             std::vector<Hook*> m_hooks;
             /**
+             * Whether the mod has been loaded or not
+             */
+            bool m_loaded;
+            /**
              * Whether the mod is enabled or not
              */
             bool m_enabled;
             /**
              * Dependencies
              */
-            std::unordered_map<std::string, Dependency> m_dependencies;
+            std::vector<Dependency> m_dependencies;
 
             /**
              * Cleanup platform-related info
@@ -75,6 +77,13 @@ namespace lilac {
              * depends on another mod
              */
             bool depends(std::string_view const& id) const;
+
+            /**
+             * Check whether all the required 
+             * dependencies for this mod have 
+             * been loaded or not
+             */
+            bool hasUnresolvedDependencies() const;
             
             /**
              * Low-level add hook
@@ -150,16 +159,6 @@ namespace lilac {
             std::string_view m_credits = "";
 
             /**
-             * Set the dependencies for this mod.
-             * The value is a map of keys containing
-             * the ID of the mod and values of
-             * type `DependencyType` specifying
-             * whether the dependency is required,
-             * an Expnasion or optional.
-             */
-            void setDependencies(std::unordered_map<std::string, DependencyType> const& dependencies);
-
-            /**
              * Mod-specific setup function.
              * Initialize `m_id`, `m_name`,
              * `m_developer` and other members
@@ -216,6 +215,7 @@ namespace lilac {
             std::string_view getPath()       const;
             VersionInfo      getVersion()    const;
             bool             isEnabled()     const;
+            bool             isLoaded()      const;
 
             /**
              * Log to lilac's integrated console / 
@@ -291,6 +291,12 @@ namespace lilac {
              * errorful result with info on error
              */
             Result<> removeHook(Hook* hook);
+
+            /**
+             * Check whether or not this Mod
+             * depends on another mod
+             */
+            bool depends(std::string_view const& id) const;
 
             /**
              * Add a new keybind action, i.e. a 

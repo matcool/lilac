@@ -75,17 +75,12 @@ bool Mod::isEnabled() const {
     return this->m_enabled;
 }
 
-std::vector<Hook*> Mod::getHooks() const {
-    return this->m_hooks;
+bool Mod::isLoaded() const {
+    return this->m_loaded;
 }
 
-void Mod::setDependencies(std::unordered_map<std::string, DependencyType> const& dependencies) {
-    this->m_dependencies = map_utils::remap<
-        std::string, DependencyType,
-        std::string, Dependency
-    >(dependencies, [](std::pair<std::string, DependencyType> val) -> std::pair<std::string, Dependency> {
-        return { std::get<0>(val), { std::get<1>(val), false } };
-    });
+std::vector<Hook*> Mod::getHooks() const {
+    return this->m_hooks;
 }
 
 LogStream& Mod::log() {
@@ -115,4 +110,22 @@ bool Mod::addKeybindAction(
 
 bool Mod::removeKeybindAction(keybind_action_id const& id) {
     return KeybindManager::get()->removeKeybindAction(this, id);
+}
+
+bool Mod::depends(std::string_view const& id) const {
+    return this->ModBase::depends(id);
+}
+
+bool ModBase::depends(std::string_view const& id) const {
+    return vector_utils::contains<Dependency>(
+        this->m_dependencies,
+        [id](Dependency t) -> bool { return t.m_name == id; }
+    );
+}
+
+bool ModBase::hasUnresolvedDependencies() const {
+    return vector_utils::contains<Dependency>(
+        this->m_dependencies,
+        [](Dependency t) -> bool { return t.m_required && !t.m_loaded; }
+    );
 }

@@ -11,7 +11,7 @@ USE_LILAC_NAMESPACE();
 
 using namespace zipper;
 
-Result<bool> Loader::checkMetaInformation(std::string const& path) {
+Result<Mod*> Loader::checkMetaInformation(std::string const& path) {
     auto unzip = Unzipper(path);
     lilac::byte_array bytes {};
     if (!unzip.extractEntryToMemory("mod.json", bytes)) {
@@ -43,9 +43,6 @@ Result<bool> Loader::checkMetaInformation(std::string const& path) {
     }
     switch (schema) {
         case 1: {
-
-
-            return Ok<>(true);
         } break;
     }
     return Err<>(
