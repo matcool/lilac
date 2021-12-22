@@ -22,11 +22,37 @@ namespace lilac {
     class Hook;
     class LogStream;
     class LogMessage;
+    struct UnresolvedMod;
+
+    /**
+     * Describes if a mod has been resolved, 
+     * i.e. its dependencies have been loaded.
+     */
+    enum class ModResolveState {
+        /**
+         * Some dependencies are not loaded 
+         * at all
+         */
+        SomeMissing,
+        /**
+         * Some dependencies are loaded, 
+         * but haven't been resolved 
+         * themselves
+         */
+        SomeUnresolved,
+        /**
+         * All dependencies are loaded & 
+         * their dependencies resolved
+         */
+        AllResolved,
+    };
 
     class LILAC_DLL Loader {
         protected:
             std::vector<Mod*> m_mods;
             std::vector<LogMessage*> m_logs;
+            std::unordered_map<std::string, ModResolveState> m_resolveStates;
+            std::vector<UnresolvedMod*> m_unresolvedMods;
             LogStream* m_logStream;
             bool m_isSetup = false;
 

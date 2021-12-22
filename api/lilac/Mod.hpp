@@ -24,13 +24,32 @@ namespace lilac {
     class LogStream;
 
     struct Dependency {
-        std::string_view m_name;
+        std::string_view m_id;
         bool m_required;
         Mod* m_loaded = nullptr;
     };
 
     /**
-     * @class ModBase
+     * A mod that has been picked up 
+     * by lilac, but which has unresolved 
+     * dependencies and thus its code 
+     * and Mod interface have not been 
+     * loaded yet.
+     * 
+     * Once all dependencies are loaded, 
+     * the Mod interface will be loaded.
+     * @struct UnresolvedMod
+     */
+    struct LILAC_DLL UnresolvedMod {
+        std::string_view m_path;
+        std::string_view m_id;
+        std::vector<Dependency> m_dependencies;
+
+        bool hasUnresolvedDependencies() const;
+        Result<> resolve();
+    };
+
+    /**
      * Base for the Mod class.
      * Contains internal members that
      * are managed by lilac. Do not
@@ -38,6 +57,7 @@ namespace lilac {
      * on here that don't have public
      * getters / setters in the Mod
      * class.
+     * @class ModBase
      */
     class LILAC_DLL ModBase {
         protected:
@@ -54,10 +74,6 @@ namespace lilac {
              * Hooks owned by this mod
              */
             std::vector<Hook*> m_hooks;
-            /**
-             * Whether the mod has been loaded or not
-             */
-            bool m_loaded;
             /**
              * Whether the mod is enabled or not
              */
