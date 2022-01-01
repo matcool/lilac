@@ -25,6 +25,7 @@ namespace lilac {
 
     struct Dependency {
         std::string_view m_id;
+        VersionInfo m_version { 1, 0, 0 };
         bool m_required;
         Mod* m_loaded = nullptr;
     };
@@ -43,6 +44,7 @@ namespace lilac {
     struct LILAC_DLL UnresolvedMod {
         std::string_view m_path;
         std::string_view m_id;
+        VersionInfo m_version { 1, 0, 0 };
         std::vector<Dependency> m_dependencies;
 
         bool hasUnresolvedDependencies() const;
@@ -231,7 +233,6 @@ namespace lilac {
             std::string_view getPath()       const;
             VersionInfo      getVersion()    const;
             bool             isEnabled()     const;
-            bool             isLoaded()      const;
 
             /**
              * Log to lilac's integrated console / 

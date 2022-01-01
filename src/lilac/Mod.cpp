@@ -75,10 +75,6 @@ bool Mod::isEnabled() const {
     return this->m_enabled;
 }
 
-bool Mod::isLoaded() const {
-    return this->m_loaded;
-}
-
 std::vector<Hook*> Mod::getHooks() const {
     return this->m_hooks;
 }
@@ -119,7 +115,7 @@ bool Mod::depends(std::string_view const& id) const {
 bool ModBase::depends(std::string_view const& id) const {
     return vector_utils::contains<Dependency>(
         this->m_dependencies,
-        [id](Dependency t) -> bool { return t.m_name == id; }
+        [id](Dependency t) -> bool { return t.m_id == id; }
     );
 }
 

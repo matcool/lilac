@@ -56,6 +56,23 @@ namespace lilac {
             LogStream* m_logStream;
             bool m_isSetup = false;
 
+            /**
+             * Lowest supported mod version.
+             * Any mod targeting a lilac version 
+             * lower than this will not be loaded, 
+             * as they will be considered out-of-date.
+             */
+            static constexpr const int s_supportedSchemaMin = 1;
+            /**
+             * Highest support mod version.
+             * Any mod targeting a lilac version 
+             * higher than this will not be loaded, 
+             * as a higher version means that 
+             * the user's lilac is out-of-date, 
+             * or that the user is a time traveller 
+             * and has downloaded a mod from the 
+             * future.
+             */
             static constexpr const int s_supportedSchemaMax = 1;
 
             Loader();
