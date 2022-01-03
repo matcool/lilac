@@ -25,8 +25,8 @@ Lilac::~Lilac() {
 }
 
 Lilac* Lilac::get() {
-    static auto g_lilac = new Lilac;
-    return g_lilac;
+    static auto inst = new Lilac;
+    return inst;
 }
 
 bool Lilac::setup() {

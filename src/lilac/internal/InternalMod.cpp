@@ -11,6 +11,6 @@ void InternalMod::setup() {
 }
 
 InternalMod* InternalMod::get() {
-    static auto g_mod = new InternalMod;
-    return g_mod;
+    static auto inst = new InternalMod;
+    return inst;
 }

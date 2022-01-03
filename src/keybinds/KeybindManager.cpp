@@ -14,8 +14,8 @@ KeybindManager::KeybindManager() {
 KeybindManager::~KeybindManager() {}
 
 KeybindManager* KeybindManager::get() {
-    static auto g_manager = new KeybindManager;
-    return g_manager;
+    static auto inst = new KeybindManager;
+    return inst;
 }
 
 bool KeybindManager::addKeybindAction(
@@ -87,7 +87,7 @@ bool KeybindManager::removeKeybindAction(
                 this->m_mCategoryInfo.erase(category);
             }
         }
-        
+
         delete action;
         return true;
     }
@@ -207,7 +207,7 @@ KeybindActionList KeybindManager::getAllActions(
 }
 
 KeybindActionList KeybindManager::getAllActionsForKeybind(
-    keybind_category_id const& category, 
+    keybind_category_id const& category,
     Keybind const& bind
 ) {
     if (!this->m_mKeybinds.count(bind)) {

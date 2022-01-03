@@ -10,7 +10,7 @@ using namespace std::literals::string_literals;
 #define CREATE_HOOK(_class_, _func_) \
     static CreateHookAddr<&_class_##_##_func_>$##_class_##_##_func_(addressOf<&_class_##::##_func_>());
 
-template<auto Func, auto Detour>
+template <auto Func, auto Detour>
 struct CreateHook {
     constexpr CreateHook() {
         auto res = InternalMod::get()->addHook(as<void*>(Func), as<void*>(Detour));
@@ -20,7 +20,7 @@ struct CreateHook {
     }
 };
 
-template<auto Detour>
+template <auto Detour>
 struct CreateHookAddr {
     constexpr CreateHookAddr(void* addr) {
         auto res = InternalMod::get()->addHook(addr, as<void*>(Detour));
@@ -35,7 +35,7 @@ struct CreateHookAddr {
     }
 };
 
-template<auto Detour>
+template <auto Detour>
 struct CreateHookMod {
     static inline std::unordered_map<std::string, HMODULE> m_mods = {};
 

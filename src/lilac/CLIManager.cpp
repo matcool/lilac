@@ -3,8 +3,8 @@
 USE_LILAC_NAMESPACE();
 
 CLIManager* CLIManager::get() {
-    static auto g_cli = new CLIManager;
-    return g_cli;
+    static auto inst = new CLIManager;
+    return inst;
 }
 
 void CLIManager::addCommand(CLICommand cmd) {

@@ -2,7 +2,7 @@
 
 bool __fastcall CCKeyboardDispatcher_dispatchKeyboardMSG(
     CCKeyboardDispatcher* self,
-    edx_t,
+    void*,
     enumKeyCodes key,
     bool down
 ) {
@@ -22,7 +22,7 @@ static CreateHookMod<&CCKeyboardDispatcher_dispatchKeyboardMSG>$cckddkmsg(
     "?dispatchKeyboardMSG@CCKeyboardDispatcher@cocos2d@@QAE_NW4enumKeyCodes@2@_N@Z"
 );
 
-void __fastcall CCScheduler_update(CCScheduler* self, edx_t, float dt) {
+void __fastcall CCScheduler_update(CCScheduler* self, void*, float dt) {
     KeybindManager::get()->handleRepeats(dt);
     return self->update(dt);
 }
@@ -34,7 +34,7 @@ static CreateHookMod<&CCScheduler_update>$ccsu(
 class CCEGLView_hook : public CCEGLView {
 public:
     static void __fastcall onGLFWMouseCallBack(
-        CCEGLView_hook* self, edx_t, GLFWwindow* wnd, int btn, int pressed, int z
+        CCEGLView_hook* self, void*, GLFWwindow* wnd, int btn, int pressed, int z
     ) {
         KeybindManager::get()->registerMousePress(
             static_cast<MouseButton>(btn), pressed

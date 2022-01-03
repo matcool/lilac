@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.8)
 project(lilac_loader LANGUAGES CXX VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 17)
 
-file(GLOB_RECURSE SOURCES 
-	src/*.cpp
-)
+add_subdirectory(src)
+
+message("hello ${SOURCES}")
 
 add_compile_definitions(LILAC_EXPORTING)
 
@@ -57,8 +57,8 @@ function(create_lilac_file proname)
 	)
 	add_custom_command(
 		TARGET ${proname}
-		COMMAND ${CMAKE_COMMAND} -E tar "cf" 
-			"${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/${proname}.lilac" --format=zip -- 
+		COMMAND ${CMAKE_COMMAND} -E tar "cf"
+			"${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/${proname}.lilac" --format=zip --
 			"${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/mod.json"
 			"${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/${proname}.dll"
 			"${srcs}"

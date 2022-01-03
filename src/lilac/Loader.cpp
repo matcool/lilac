@@ -9,8 +9,8 @@
 USE_LILAC_NAMESPACE();
 
 Loader* Loader::get() {
-    static auto g_loader = new Loader;
-    return g_loader;
+    static auto inst = new Loader;
+    return inst;
 }
 
 void Loader::createDirectories() {
@@ -80,7 +80,7 @@ std::vector<Mod*> Loader::getLoadedMods() {
 
 void Loader::unloadMod(Mod* mod) {
     vector_utils::erase(this->m_mods, mod);
-    // ~Mod will call FreeLibrary 
+    // ~Mod will call FreeLibrary
     // automatically
     delete mod;
 }
